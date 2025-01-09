@@ -1,5 +1,5 @@
-const $ProjectileUtil = Java.loadClass('net.minecraft.world.entity.projectile.ProjectileUtil')
-const $ItemEntity = Java.loadClass('net.minecraft.world.entity.item.ItemEntity')
+const $ProjectileUtil = Java.loadClass("net.minecraft.world.entity.projectile.ProjectileUtil");
+const $ItemEntity = Java.loadClass("net.minecraft.world.entity.item.ItemEntity");
 
 const autoPickUpItems = ["minecraft:emerald"];
 
@@ -10,16 +10,18 @@ ServerEvents.tags("item", event => {
     for (const item in coinsMap) {
         event.add("autopickup", item);
     }
+    event.add("weapon", "tacz:modern_kinetic_gun");
 });
 
 ItemEvents.firstRightClicked(event => {
-    const player = event.player
-    const hitResult = $ProjectileUtil.getHitResultOnViewVector(player, () => true, player.reachDistance)
+    if (event.hand != "MAIN_HAND") return;
+    const player = event.player;
+    const hitResult = $ProjectileUtil.getHitResultOnViewVector(player, () => true, player.reachDistance);
     /** @type {Internal.Entity} */
-    const entity = hitResult.entity
-    if (!entity || !(entity instanceof $ItemEntity) || entity.tags.contains('pickup')) return
-    entity.addTag('pickup')
-    entity.setNoPickUpDelay()
-    entity.playerTouch(player)
-    player.swing()
-})
+    const entity = hitResult.entity;
+    if (!entity || !(entity instanceof $ItemEntity) || entity.tags.contains("pickup")) return;
+    entity.addTag("pickup");
+    entity.setNoPickUpDelay();
+    entity.playerTouch(player);
+    player.swing();
+});

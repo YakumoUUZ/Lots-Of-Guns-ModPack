@@ -14,11 +14,11 @@ PlayerCoin.prototype = {
     },
     add: function (count) {
         this.data.coin = this.data.coin + count;
-        updateCoinCount(this.player)
+        updateCoinCount(this.player);
     },
     set: function (count) {
         this.data.coin = count;
-        updateCoinCount(this.player)
+        updateCoinCount(this.player);
     },
 };
 
