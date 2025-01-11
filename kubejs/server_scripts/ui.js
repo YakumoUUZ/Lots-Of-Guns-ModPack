@@ -17,7 +17,7 @@ function initCoinIcon(player) {
             y: 10,
             alignX: "left",
             alignY: "top",
-            draw: "always",
+            draw: "ingame",
         },
         CoinCount: {
             type: "text",
@@ -27,7 +27,7 @@ function initCoinIcon(player) {
             y: 10,
             alignX: "left",
             alignY: "top",
-            draw: "always",
+            draw: "ingame",
         },
     });
 }
