@@ -2,13 +2,13 @@
  * @class
  * @param {Internal.Player} player
  */
-function PlayerCoin(player) {
+global.PlayerCoin = function (player) {
     this.player = player;
     this.data = this.player.persistentData;
     if (!this?.data?.coin) this.data.coin = 0;
 }
 
-PlayerCoin.prototype = {
+global.PlayerCoin.prototype = {
     get: function () {
         return this.data.getInt("coin");
     },
@@ -21,8 +21,6 @@ PlayerCoin.prototype = {
         updateCoinCount(this.player);
     },
 };
-
-global.PlayerCoin = PlayerCoin;
 
 ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event;

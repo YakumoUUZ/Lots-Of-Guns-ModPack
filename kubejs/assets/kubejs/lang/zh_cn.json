@@ -1,0 +1,4 @@
+{
+    "warning.kubejs.tooManyWeapons": "你不能同时拥有超过 %s 个武器!",
+    "gui.kubejs.pedestalSetting.title": "展示台设置"
+}

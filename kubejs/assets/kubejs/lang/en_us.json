@@ -1,0 +1,4 @@
+{
+    "warning.kubejs.tooManyWeapons": "You can't equip more than %s weapons at once!",
+    "gui.kubejs.pedestalSetting.title": "pedestal setting"
+}
