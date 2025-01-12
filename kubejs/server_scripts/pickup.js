@@ -27,16 +27,10 @@ ItemEvents.firstRightClicked(event => {
 });
 
 BlockEvents.rightClicked(event => {
-    if (event.block && event.block.id.startsWith("pedestals:")) event.cancel();
-});
-
-ItemEvents.firstRightClicked(event => {
-    if (event.hand != "MAIN_HAND") return;
-    /** @type {Internal.ServerPlayer} */
-    let player = event.player;
-    let block = player.rayTrace(player.getEntityReach()).block;
+    let { player, block } = event;
     if (!(block && block.id.startsWith("pedestals:"))) return;
     pedestalInteract(block, player);
+    event.cancel();
 });
 
 /**
