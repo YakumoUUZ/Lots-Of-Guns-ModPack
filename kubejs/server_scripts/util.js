@@ -6,7 +6,7 @@ global.PlayerCoin = function (player) {
     this.player = player;
     this.data = this.player.persistentData;
     if (!this?.data?.coin) this.data.coin = 0;
-}
+};
 
 global.PlayerCoin.prototype = {
     get: function () {
@@ -29,7 +29,7 @@ ServerEvents.commandRegistry(event => {
             .executes(ctx => {
                 let player = ctx.source.playerOrException;
                 let playerName = player.getName().getString();
-                let coin = new PlayerCoin(player).get();
+                let coin = new global.PlayerCoin(player).get();
                 player.tell(`${playerName} has ${coin} coins`);
                 return coin;
             })
@@ -39,7 +39,7 @@ ServerEvents.commandRegistry(event => {
                     .then(
                         Commands.argument("count", Arguments.INTEGER.create(event)).executes(ctx => {
                             let player = ctx.source.playerOrException;
-                            let coin = new PlayerCoin(player);
+                            let coin = new global.PlayerCoin(player);
                             coin.add(Arguments.INTEGER.getResult(ctx, "count"));
                             return coin.get();
                         })
@@ -51,7 +51,7 @@ ServerEvents.commandRegistry(event => {
                     .then(
                         Commands.argument("count", Arguments.INTEGER.create(event)).executes(ctx => {
                             let player = ctx.source.playerOrException;
-                            let coin = new PlayerCoin(player);
+                            let coin = new global.PlayerCoin(player);
                             coin.set(Arguments.INTEGER.getResult(ctx, "count"));
                             return coin.get();
                         })

@@ -6,12 +6,12 @@ let $ItemEntity = Java.loadClass("net.minecraft.world.entity.item.ItemEntity");
  * @param {Internal.ItemStack} item
  * @returns {boolean} success
  */
-global.playerGetItem = function (player, item) {
+global.playerGetItem = function (player, item, slot) {
     let itemId = item.id;
+    slot = slot || -1;
     if (global.coinsMap[itemId]) {
         let coin = new global.PlayerCoin(player);
-        coin.add(global.coinsMap[itemId]);
-        item.setCount(0);
+        coin.add(global.coinsMap[itemId] * item.getCount());
         //TODO 音效不知道为什么没效果
         console.log(player.level);
         console.log(Utils.getSound("minecraft:entity.player.levelup"));
@@ -22,19 +22,19 @@ global.playerGetItem = function (player, item) {
     }
     if (item.hasTag("weapon")) {
         if (player.inventory.count("#weapon") < 2) {
-            player.give(item);
+            player.inventory.add(slot, item.copy());
             return true;
         } else if (player.mainHandItem.hasTag("weapon")) {
             new $ItemEntity(player.level, player.x, player.y, player.z, player.mainHandItem.copy(), 0, 0, 0).spawn();
             player.inventory.removeFromSelected(true);
-            player.inventory.add(player.inventory.selected, item);
+            player.inventory.add(player.inventory.selected, item.copy());
             return true;
         } else {
             player.sendSystemMessage(Text.translate("warning.kubejs.tooManyWeapons", (2).toString()).red(), true);
             return false;
         }
     } else {
-        player.give(item);
+        player.inventory.add(slot, item.copy());
     }
     return true;
 };
@@ -59,6 +59,8 @@ global.itemPickUp = function (event) {
     console.log("Picked up " + itemId);
     if (!global.playerGetItem(player, item)) {
         event.setCanceled(true);
+    } else {
+        item.count = 0;
     }
 };
 

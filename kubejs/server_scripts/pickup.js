@@ -119,7 +119,7 @@ function pedestalInteract(block, player) {
     if (pedestalItem.isEmpty()) return;
     switch (pedestalType()) {
         case global.pedestalsTypeList[0]:
-            if (global.playerGetItem(player, pedestalItem)){
+            if (global.playerGetItem(player, pedestalItem)) {
                 inventory.setStackInSlot(0, Item.empty);
             }
             break;
@@ -127,19 +127,21 @@ function pedestalInteract(block, player) {
             let weapon = player.inventory.find("#weapon");
             if (weapon > 0) {
                 player.inventory.removeItem(weapon, 1);
-                player.inventory.setItem(weapon, pedestalItem.copy());
+                global.playerGetItem(player, pedestalItem, weapon);
             } else {
-                player.give(pedestalItem);
+                global.playerGetItem(player, pedestalItem);
             }
             break;
         }
         case global.pedestalsTypeList[2]: {
             let price = block.entity.persistentData.getInt("price");
-            let playerCoin = new PlayerCoin(player);
+            let playerCoin = new global.PlayerCoin(player);
             if (playerCoin.get() >= price) {
                 playerCoin.add(-price);
                 block.entity.persistentData.pedestalType = global.pedestalsTypeList[0];
                 pedestalInteract(block, player);
+            } else {
+                player.sendSystemMessage(Text.translate("warning.kubejs.notEnoughCoins").red(), true);
             }
             break;
         }

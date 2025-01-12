@@ -1,4 +1,5 @@
 {
     "warning.kubejs.tooManyWeapons": "You can't equip more than %s weapons at once!",
+    "warning.kubejs.notEnoughCoins": "You don't have enough coins to buy this item!",
     "gui.kubejs.pedestalSetting.title": "pedestal setting"
 }
