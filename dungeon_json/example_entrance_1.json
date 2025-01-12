@@ -1,0 +1,54 @@
+{
+	"roomtype":"entrance",
+	"chunk_size":{
+		"x":1,
+		"z":1
+	},
+	
+	"block_shift":{
+		"x":0,
+		"z":16
+	},
+	
+	"detect_range":{
+		"from":[1,1,1],
+		"to":[15,10,15]
+	},
+	
+	"door_data":[
+		{
+			"pos":[6,2,0],
+			"block":"minecraft:tinted_glass",
+			"height":3
+		},
+		{
+			"pos":[7,2,0],
+			"block":"minecraft:tinted_glass",
+			"height":4
+		},
+		{
+			"pos":[8,2,0],
+			"block":"minecraft:tinted_glass",
+			"height":4
+		},
+		{
+			"pos":[9,2,0],
+			"block":"minecraft:tinted_glass",
+			"height":3
+		}
+	],
+	
+	"theme_data":{
+		"enemy_rooms":[
+			{
+				"id":"example_enemy_1",
+				"weight":2
+			},
+			{
+				"id":"example_enemy_2",
+				"weight":1
+			}
+		],
+		"end_room":"example_end_1"
+	}
+}

@@ -27,7 +27,7 @@ ItemEvents.firstRightClicked(event => {
 });
 
 BlockEvents.rightClicked(event => {
-    if (event.block && event.block.id.startsWith("pedestals:")) event.cancel();
+    if (event.block?.id.startsWith("pedestals:")) event.cancel();
 });
 
 ItemEvents.firstRightClicked(event => {
@@ -35,7 +35,7 @@ ItemEvents.firstRightClicked(event => {
     /** @type {Internal.ServerPlayer} */
     let player = event.player;
     let block = player.rayTrace(player.getEntityReach()).block;
-    if (!(block && block.id.startsWith("pedestals:"))) return;
+    if (!(block?.id.startsWith("pedestals:"))) return;
     pedestalInteract(block, player);
 });
 

@@ -59,3 +59,24 @@ ServerEvents.commandRegistry(event => {
             )
     );
 });
+
+/* ItemEvents.firstRightClicked("stick", event => {
+    if (event.hand != "MAIN_HAND") return;
+    const player = event.player;
+    player.swing()
+});
+
+ServerEvents.commandRegistry(event => {
+    const { commands: Commands, arguments: Arguments } = event;
+    event.register(
+        Commands.literal("test").executes(ctx => {
+            try {
+                let player = ctx.source.playerOrException;
+            } catch (e) {
+                console.error(e);
+            }
+            return 1;
+        })
+    );
+});
+ */

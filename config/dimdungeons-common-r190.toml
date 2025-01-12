@@ -27,7 +27,7 @@
 	basicEnemyHealthScaling = 1.0
 	advancedEnemyHealthScaling = 2.0
 	#The number of themes to expect in the common config.
-	numberOfThemes = 3
+	numberOfThemes = 4
 
 #Settings for Theme 1
 [dungeonTheme1]
@@ -70,16 +70,16 @@
 
 #Settings for Theme 4
 [dungeonTheme4]
-	themeEntrances4 = []
-	themeFourways4 = []
-	themeThreeways4 = []
-	themeHallways4 = []
-	themeCorners4 = []
-	themeEnds4 = []
+	themeEntrances4 = [["kubejs:entrance"]]
+	themeFourways4 = [["kubejs:1x1"]]
+	themeThreeways4 = [["kubejs:1x1"]]
+	themeHallways4 = [["kubejs:1x1"]]
+	themeCorners4 = [["kubejs:1x1"]]
+	themeEnds4 = [["kubejs:1x1"]]
 	themeEnemySet1_4 = ["minecraft:zombie", "minecraft:husk", "minecraft:drowned", "minecraft:spider"]
 	themeEnemySet2_4 = ["minecraft:wither_skeleton", "minecraft:stray", "minecraft:skeleton", "minecraft:pillager"]
 	themeEnemyHealthScaling4 = 1.0
-	themeDungeonSize4 = 14
+	themeDungeonSize4 = 1
 
 #Settings for Theme 5
 [dungeonTheme5]
