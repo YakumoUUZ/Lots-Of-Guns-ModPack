@@ -12,27 +12,27 @@
 	
 	"detect_range":{
 		"from":[1,1,1],
-		"to":[15,10,15]
+		"to":[14,10,14]
 	},
 	
 	"door_data":[
 		{
-			"pos":[6,2,0],
+			"pos":[6,0,0],
 			"block":"minecraft:tinted_glass",
 			"height":3
 		},
 		{
-			"pos":[7,2,0],
+			"pos":[7,0,0],
 			"block":"minecraft:tinted_glass",
 			"height":4
 		},
 		{
-			"pos":[8,2,0],
+			"pos":[8,0,0],
 			"block":"minecraft:tinted_glass",
 			"height":4
 		},
 		{
-			"pos":[9,2,0],
+			"pos":[9,0,0],
 			"block":"minecraft:tinted_glass",
 			"height":3
 		}

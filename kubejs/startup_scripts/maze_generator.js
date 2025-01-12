@@ -32,7 +32,7 @@ StartupEvents.registry("block", event => {
 
 /**
  *
- * @param {$BlockEntity_} entity
+ * @param {Internal.BlockEntity} entity
  */
 global.room_function = function (entity) {
     let data = entity.persistentData;
@@ -55,21 +55,25 @@ global.room_function = function (entity) {
         let flag = data.getInt("flag");
         let pos = entity.getBlockPos();
         let rng = data.detect_range;
-        let AABBrng = new AABB.of(pos.getX() + rng[0], pos.getY() + rng[2], pos.getZ() + rng[4], pos.getX() + rng[1], pos.getY() + rng[3], pos.getZ() + rng[5]);
+        // let AABBrng = new AABB.of(pos.getX() + rng[0], pos.getY() + rng[2], pos.getZ() + rng[4], pos.getX() + rng[1], pos.getY() + rng[3], pos.getZ() + rng[5]);
+        let AABBrng = AABB.ofBlocks(pos.offset(rng[0], rng[2], rng[4]), pos.offset(rng[1], rng[3], rng[5]));
         let entitylist = level.getEntitiesWithin(AABBrng).filter(i => i.isAlive() && i.isLiving());
-        let players = entitylist.filter(i => i.isPlayer());
+        let players = entitylist.filter(i => i.isPlayer() && AABBrng.inflate(-1, 0, -1).contains(i.position()));
         let enemies = entitylist.filter(i => !i.isPlayer());
+        //刷新第一波
         if (flag == 0 && players.length > 0) {
             global.door_action(level, entity, false);
             global.spawn_wave(level, entity, 1); // 波数以1为起始
             data.putInt("flag", 1);
         }
+        //波次结束
         if (flag > 0 && enemies.length == 0) {
             data.putInt("flag", flag + 1);
             let isspawnvalid = global.spawn_wave(level, entity, flag + 1);
             if (isspawnvalid == -1) {
                 global.build_room(level, rlist[stage], entity);
                 global.door_action(level, entity, true);
+                level.server.scheduleInTicks(1, () => {level.getBlock(entity.blockPos).set('air')})
             }
         }
     }
@@ -82,9 +86,9 @@ global.room_function = function (entity) {
 };
 /**
  *
- * @param {$LevelKJS_} level
+ * @param {Internal.LevelKJS} level
  * @param {String} name
- * @param {$BlockEntity_} entity
+ * @param {Internal.BlockEntity} entity
  */
 global.build_room = function (level, name, entity) {
     let data = entity.persistentData;
@@ -93,19 +97,19 @@ global.build_room = function (level, name, entity) {
     let stage = data.getInt("stage") + 1;
     console.log(name);
     let roomdata = JsonIO.read(`./dungeon_json/${name}.json`) || {};
-    console.log("???");
-    let pos_shift = [roomdata.block_shift.x - data.getInt("dx"), roomdata.block_shift.z];
     let pos = entity.getBlockPos();
-    let target_pos = [pos.getX() + pos_shift[0], pos.getY(), pos.getZ() - roomdata.chunk_size.z * 16 + pos_shift[1]];
-
+    // let target_pos = [pos.getX() + pos_shift[0], pos.getY(), pos.getZ() - roomdata.chunk_size.z * 16 + pos_shift[1]];
+    let target_pos = pos.offset(roomdata.block_shift.x - data.getInt("dx"), 0, roomdata.block_shift.z - roomdata.chunk_size.z * 16);
+    /* 
     let strblock = level.getBlock(target_pos[0], target_pos[1] - 1, target_pos[2]);
     strblock.set("minecraft:structure_block");
     strblock.mergeEntityData({ name: `kubejs:${name}`, posY: 2 });
     let powerblock = level.getBlock(target_pos[0], target_pos[1] - 2, target_pos[2]);
     powerblock.set("minecraft:redstone_block");
     strblock.set("minecraft:air");
-    powerblock.set("minecraft:air");
-    let new_core = level.getBlock(target_pos[0], target_pos[1], target_pos[2]);
+    powerblock.set("minecraft:air"); */
+    global.loadStructure(level, `kubejs:${name}`, target_pos.offset(0, 1, 0));
+    let new_core = level.getBlock(target_pos);
     new_core.set("minecraft:air");
     new_core.set("kubejs:room_core");
 
@@ -156,8 +160,8 @@ global.build_room = function (level, name, entity) {
 };
 /**
  *
- * @param {$LevelKJS_} level
- * @param {$BlockEntity_} entity
+ * @param {Internal.LevelKJS} level
+ * @param {Internal.BlockEntity} entity
  * @param {Boolean} isopen
  */
 global.door_action = function (level, entity, isopen) {
@@ -168,16 +172,13 @@ global.door_action = function (level, entity, isopen) {
     let pos = entity.getBlockPos();
     console.log(doordata);
     for (const door of doordata) {
-        let targetpos = door.pos;
-        targetpos[0] += pos.getX();
-        targetpos[1] += pos.getY();
-        targetpos[2] += pos.getZ();
+        let targetpos = pos.offset(door.pos[0], door.pos[1] + 1, door.pos[2]);
         level.spawnParticles(
             "minecraft:campfire_signal_smoke",
             false,
-            targetpos[0] + 0.5,
-            targetpos[1] + door.height / 2,
-            targetpos[2] + 0.5,
+            targetpos.x + 0.5,
+            targetpos.y + door.height / 2,
+            targetpos.z + 0.5,
             0.5,
             door.height / 2,
             0.5,
@@ -185,23 +186,23 @@ global.door_action = function (level, entity, isopen) {
             0.01
         );
         for (let j = 0; j < door.height; j++) {
-            let targetblock = level.getBlock(targetpos[0], targetpos[1], targetpos[2]);
-            console.log(targetblock.pos.toString());
+            targetpos = targetpos.above();
+            let targetblock = level.getBlock(targetpos);
+            // console.log(targetblock.pos.toString());
             if (!isopen) {
                 targetblock.set(door.block);
             } else {
                 targetblock.set("minecraft:air");
             }
-            targetpos[1] += 1;
         }
     }
 };
 
 /**
  *
- * @param {$LevelKJS_} level
- * @param {$BlockEntity_} entity
- * @param {integer} wave
+ * @param {Internal.LevelKJS} level
+ * @param {Internal.BlockEntity} entity
+ * @param {Integer} wave
  */
 global.spawn_wave = function (level, entity, wave) {
     let data = entity.persistentData;
@@ -211,13 +212,10 @@ global.spawn_wave = function (level, entity, wave) {
     let wavedata = roomdata.wave_data[wave - 1];
     let pos = entity.getBlockPos();
     for (const wave of wavedata) {
-        let targetpos = wave.pos;
-        targetpos[0] += pos.getX();
-        targetpos[1] += pos.getY();
-        targetpos[2] += pos.getZ();
-        level.spawnParticles("minecraft:poof", false, targetpos[0] + 0.5, targetpos[1] + 1, targetpos[2] + 0.5, 0.5, 1, 0.5, 10, 0.01);
+        let targetpos = pos.offset(wave.pos[0], wave.pos[1], wave.pos[2]);
+        level.spawnParticles("minecraft:poof", false, targetpos.x + 0.5, targetpos.y + 1, targetpos.z + 0.5, 0.5, 1, 0.5, 10, 0.01);
         let target = level.createEntity(wave.type);
-        target.setPosition(targetpos[0] + 0.5, targetpos[1] + 0.1, targetpos[2] + 0.5);
+        target.setPosition(targetpos.x + 0.5, targetpos.y + 0.1, targetpos.z + 0.5);
         target.spawn();
     }
     return 1;

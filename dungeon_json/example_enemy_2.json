@@ -12,47 +12,47 @@
 	
 	"detect_range":{
 		"from":[1,1,1],
-		"to":[31,10,31]
+		"to":[30,10,30]
 	},
 	
 	"door_data":[
 		{
-			"pos":[14,2,0],
+			"pos":[14,0,0],
 			"block":"minecraft:tinted_glass",
 			"height":3
 		},
 		{
-			"pos":[15,2,0],
+			"pos":[15,0,0],
 			"block":"minecraft:tinted_glass",
 			"height":4
 		},
 		{
-			"pos":[16,2,0],
+			"pos":[16,0,0],
 			"block":"minecraft:tinted_glass",
 			"height":4
 		},
 		{
-			"pos":[17,2,0],
+			"pos":[17,0,0],
 			"block":"minecraft:tinted_glass",
 			"height":3
 		},
 		{
-			"pos":[14,2,31],
+			"pos":[14,0,31],
 			"block":"minecraft:tinted_glass",
 			"height":3
 		},
 		{
-			"pos":[15,2,31],
+			"pos":[15,0,31],
 			"block":"minecraft:tinted_glass",
 			"height":4
 		},
 		{
-			"pos":[16,2,31],
+			"pos":[16,0,31],
 			"block":"minecraft:tinted_glass",
 			"height":4
 		},
 		{
-			"pos":[17,2,31],
+			"pos":[17,0,31],
 			"block":"minecraft:tinted_glass",
 			"height":3
 		}

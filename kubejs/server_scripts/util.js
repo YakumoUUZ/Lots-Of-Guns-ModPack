@@ -1,3 +1,6 @@
+let $StructurePlaceSettings = Java.loadClass("net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings");
+let $RandomSource = Java.loadClass("net.minecraft.util.RandomSource");
+
 /**
  * @class
  * @param {Internal.Player} player
@@ -20,6 +23,22 @@ global.PlayerCoin.prototype = {
         this.data.coin = count;
         updateCoinCount(this.player);
     },
+};
+
+/**
+ *
+ * @param {Internal.ServerLevel} level
+ * @param {String} name
+ * @param {Internal.BlockPos} pos
+ */
+global.loadStructure = function (level, name, pos) {
+    let structureManager = level.getStructureManager();
+    let structure = structureManager.get(name);
+    if (!structure.present) {
+        console.error(`Structure ${name} not found`);
+        return;
+    }
+    structure.get().placeInWorld(level, pos, pos, new $StructurePlaceSettings(), $RandomSource.create(level.getSeed()), 2);
 };
 
 ServerEvents.commandRegistry(event => {
@@ -60,10 +79,17 @@ ServerEvents.commandRegistry(event => {
     );
 });
 
-/* ItemEvents.firstRightClicked("stick", event => {
+ItemEvents.firstRightClicked("stick", event => {
     if (event.hand != "MAIN_HAND") return;
     const player = event.player;
-    player.swing()
+    /** @type {Internal.ServerLevel} */
+    const level = player.level;
+    let pos = player.rayTrace(player.getEntityReach()).block?.pos;
+    if (!pos) return;
+    // global.loadStructure(level, "kubejs:entrance", pos);
+    level.getBlock(pos).set('air')
+    console.log(AABB.ofBlock(pos));
+    player.swing();
 });
 
 ServerEvents.commandRegistry(event => {
@@ -79,4 +105,3 @@ ServerEvents.commandRegistry(event => {
         })
     );
 });
- */
