@@ -1,5 +1,6 @@
 const autoPickUpItems = ["minecraft:emerald"];
 
+//给物品添加标签
 ServerEvents.tags("item", event => {
     for (const item of autoPickUpItems) {
         event.add("autopickup", item);
@@ -10,6 +11,8 @@ ServerEvents.tags("item", event => {
     event.add("weapon", "tacz:modern_kinetic_gun");
 });
 
+//监听右键点击物品实体事件
+//给点击的物品实体添加pickup标签，设置无拾取延迟，并让玩家与物品实体碰撞
 ItemEvents.firstRightClicked(event => {
     if (event.hand != "MAIN_HAND") return;
     const player = event.player;

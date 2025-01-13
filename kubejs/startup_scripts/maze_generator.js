@@ -31,7 +31,7 @@ StartupEvents.registry("block", event => {
 });
 
 /**
- *
+ * 房间核心tick方法
  * @param {Internal.BlockEntity} entity
  */
 global.room_function = function (entity) {
@@ -39,17 +39,22 @@ global.room_function = function (entity) {
     let level = entity.getLevel();
 
     if (data.getInt("disabled") == 1 || level.getDimension() != "dimdungeons:dungeon_dimension") return;
+
     let stage = data.getInt("stage");
+    //初始房间核心(无数据), 生成入口房间
     if (stage == 0) {
         global.build_room(level, "example_entrance_1", entity);
         return;
     }
     let type = data.getString("roomtype");
     let rlist = data.room_list;
+    //如果是入口房间, 生成第一个房间, 并开门
     if (type == "entrance") {
         global.build_room(level, rlist[stage], entity);
         global.door_action(level, entity, true);
+        return;
     }
+    //如果是敌人房间, 刷新敌人波次, 波次结束开门
     if (type == "enemy") {
         if (entity.tick % 10 != 0) return;
         let flag = data.getInt("flag");
@@ -58,6 +63,7 @@ global.room_function = function (entity) {
         // let AABBrng = new AABB.of(pos.getX() + rng[0], pos.getY() + rng[2], pos.getZ() + rng[4], pos.getX() + rng[1], pos.getY() + rng[3], pos.getZ() + rng[5]);
         let AABBrng = AABB.ofBlocks(pos.offset(rng[0], rng[2], rng[4]), pos.offset(rng[1], rng[3], rng[5]));
         let entitylist = level.getEntitiesWithin(AABBrng).filter(i => i.isAlive() && i.isLiving());
+        //玩家检测范围缩小一格, 防止关门时玩家在门中
         let players = entitylist.filter(i => i.isPlayer() && AABBrng.inflate(-1, 0, -1).contains(i.position()));
         let enemies = entitylist.filter(i => !i.isPlayer());
         //刷新第一波
@@ -73,7 +79,7 @@ global.room_function = function (entity) {
             if (isspawnvalid == -1) {
                 global.build_room(level, rlist[stage], entity);
                 global.door_action(level, entity, true);
-                level.server.scheduleInTicks(1, () => {level.getBlock(entity.blockPos).set('air')})
+                // level.server.scheduleInTicks(1, () => {level.getBlock(entity.blockPos).set('air')})
             }
         }
     }
@@ -85,13 +91,14 @@ global.room_function = function (entity) {
     */
 };
 /**
- *
+ * 构建房间
  * @param {Internal.LevelKJS} level
  * @param {String} name
  * @param {Internal.BlockEntity} entity
  */
 global.build_room = function (level, name, entity) {
     let data = entity.persistentData;
+    //将旧房间核心置为失效
     data.putInt("disabled", 1);
     let rlist = data.room_list;
     let stage = data.getInt("stage") + 1;
@@ -99,6 +106,7 @@ global.build_room = function (level, name, entity) {
     let roomdata = JsonIO.read(`./dungeon_json/${name}.json`) || {};
     let pos = entity.getBlockPos();
     // let target_pos = [pos.getX() + pos_shift[0], pos.getY(), pos.getZ() - roomdata.chunk_size.z * 16 + pos_shift[1]];
+    //新房间核心位置
     let target_pos = pos.offset(roomdata.block_shift.x - data.getInt("dx"), 0, roomdata.block_shift.z - roomdata.chunk_size.z * 16);
     /* 
     let strblock = level.getBlock(target_pos[0], target_pos[1] - 1, target_pos[2]);
@@ -126,6 +134,7 @@ global.build_room = function (level, name, entity) {
     new_data.putString("name", name);
     new_data.putInt("dx", roomdata.block_shift.x);
 
+    //如果是入口房间, 则生成房间列表
     if (roomdata.roomtype == "entrance") {
         let enemy_rooms = roomdata.theme_data.enemy_rooms;
         let room_list = [];
@@ -159,7 +168,7 @@ global.build_room = function (level, name, entity) {
     }
 };
 /**
- *
+ * 开关门
  * @param {Internal.LevelKJS} level
  * @param {Internal.BlockEntity} entity
  * @param {Boolean} isopen
@@ -170,7 +179,7 @@ global.door_action = function (level, entity, isopen) {
     let roomdata = JsonIO.read(`./dungeon_json/${name}.json`) || {};
     let doordata = roomdata.door_data;
     let pos = entity.getBlockPos();
-    console.log(doordata);
+    // console.log(doordata);
     for (const door of doordata) {
         let targetpos = pos.offset(door.pos[0], door.pos[1] + 1, door.pos[2]);
         level.spawnParticles(

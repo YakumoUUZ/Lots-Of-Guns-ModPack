@@ -1,46 +1,74 @@
+/**
+ * 添加遗物,默认数量1
+ * @param {Internal.Player} player 
+ * @param {string} relicName 
+ * @param  {number} [count]
+ * @returns {number} count
+ */
 function addRelic(player, relicName, count) {
     console.log(`Adding ${relicName} x ${count || 1} to ${player.name}`);
     if (!global.relicMap[relicName]) {
         player.tell("Invalid relic name");
         return 0;
     }
-    global.playerAddRelic(player, relicName, count);
+    let number = global.playerAddRelic(player, relicName, count);
     player.tell(`${relicName}: ${global.getPlayerRelic(player.stringUuid, relicName)}`);
-    return 1;
+    return number;
 }
 
+/**
+ * 移除遗物,默认全部
+ * @param {Internal.Player} player 
+ * @param {string} relicName 
+ * @param {number} [count] 
+ * @returns {number} count
+ */
 function removeRelic(player, relicName, count) {
     console.log(`Removing ${relicName} x ${count || "all"} from ${player.name}`);
     if (!global.relicMap[relicName]) {
         player.tell("Invalid relic name");
         return 0;
     }
-    global.playerRemoveRelic(player, relicName, count);
+    let number = global.playerRemoveRelic(player, relicName, count);
     player.tell(`${relicName}: ${global.getPlayerRelic(player.stringUuid, relicName)}`);
-    return 1;
+    return number;
 }
 
+/**
+ * 设置遗物数量
+ * @param {Internal.Player} player 
+ * @param {string} relicName 
+ * @param {number} count 
+ * @returns {number} count
+ */
 function setRelicCount(player, relicName, count) {
     console.log(`Setting ${relicName} count to ${count} for ${player.name}`);
     if (!global.relicMap[relicName]) {
         player.tell("Invalid relic name");
         return 0;
     }
-    global.playerSetRelicCount(player, relicName, count);
+    let number = global.playerSetRelicCount(player, relicName, count);
     player.tell(`${relicName}: ${global.getPlayerRelic(player.stringUuid, relicName)}`);
-    return 1;
+    return number;
 }
 
+/**
+ * 移除所有遗物
+ * @param {Internal.Player} player 
+ * @returns {number} count
+ */
 function removeAllRelics(player) {
     console.log(`Removing all relics from ${player.name}`);
     let playerRelics = global.getPlayerRelicMap(player.stringUuid);
+    let count = 0;
     for (const relicName in playerRelics) {
-        global.playerRemoveRelic(player, relicName);
+        count += global.playerRemoveRelic(player, relicName);
     }
     player.tell("All relics removed");
-    return 1;
+    return count;
 }
 
+//指令注册
 ServerEvents.commandRegistry(event => {
     const { commands: Commands, arguments: Arguments } = event;
     event.register(
@@ -144,9 +172,11 @@ ServerEvents.commandRegistry(event => {
 });
 
 /**
+ * 玩家添加遗物方法,默认数量1
  * @param {Internal.Player} player
  * @param {String} relicName
- * @param {Number} count
+ * @param {Number} [count]
+ * @returns {Number} count
  */
 global.playerAddRelic = function (player, relicName, count) {
     relicName = global.getRelicName(relicName);
@@ -160,9 +190,11 @@ global.playerAddRelic = function (player, relicName, count) {
 };
 
 /**
+ * 玩家移除遗物方法,默认全部
  * @param {Internal.Player} player
  * @param {String} relicName
- * @param {Number} count
+ * @param {Number} [count]
+ * @returns {Number} count
  */
 global.playerRemoveRelic = function (player, relicName, count) {
     relicName = global.getRelicName(relicName);
@@ -179,9 +211,11 @@ global.playerRemoveRelic = function (player, relicName, count) {
 };
 
 /**
+ * 玩家设置遗物数量方法
  * @param {Internal.Player} player
  * @param {String} relicName
  * @param {Number} count
+ * @returns {Number} count
  */
 global.playerSetRelicCount = function (player, relicName, count) {
     let playerRelicCount = global.getPlayerRelic(player, relicName);
@@ -194,6 +228,7 @@ global.playerSetRelicCount = function (player, relicName, count) {
 };
 
 /**
+ * 玩家获得遗物方法
  * @param {Internal.Player} player
  * @param {String} relicName
  */
@@ -218,6 +253,7 @@ global.playerGetRelic = function (player, relicName) {
 };
 
 /**
+ * 玩家失去遗物方法
  * @param {Internal.Player} player
  * @param {String} relicName
  */
@@ -239,10 +275,12 @@ global.playerLoseRelic = function (player, relicName) {
     global.postEvent(player, "onPlayerLoseRelic", { player: player, relicName: relicName });
 };
 
+//玩家登入时,读取nbt设置遗物
 PlayerEvents.loggedIn(event => {
     global.readRelicsFromNbt(event.player);
 });
 
+//监听实体死亡事件
 EntityEvents.death(event => {
     let player = event.source.actual;
     if (!player.isPlayer()) return;

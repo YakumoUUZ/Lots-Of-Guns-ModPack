@@ -1,3 +1,4 @@
+//玩家金币类 金币指令注册
 //#region PlayerCoin
 /**
  * @class
@@ -63,22 +64,29 @@ ServerEvents.commandRegistry(event => {
 //#endregion
 
 /**
+ * 加载结构
  * @param {Internal.ServerLevel} level
  * @param {String} name
  * @param {BlockPos} pos
  */
-global.loadStructure = function (level, name, pos) {
+global.loadStructure = function (level, name, pos, settings) {
     let structureManager = level.getStructureManager();
     let structure = structureManager.get(name);
     if (!structure.present) {
         console.error(`Structure ${name} not found`);
         return;
     }
-    structure.get().placeInWorld(level, pos, pos, new $StructurePlaceSettings(), $RandomSource.create(level.getSeed()), 2);
+    let structureSettings = new $StructurePlaceSettings();
+    if (settings) {
+        if (settings.mirror) structureSettings.setMirror(settings.mirror);
+        if (settings.rotation) structureSettings.setRotation(settings.rotation);
+        if (settings.ignoreEntities) structureSettings.setIgnoreEntities(settings.ignoreEntities);
+    }
+    structure.get().placeInWorld(level, pos, pos, structureSettings, $RandomSource.create(level.getSeed()), 2);
 };
 
 /**
- *
+ * 生成物品实体
  * @param {Internal.Level} level
  * @param {Internal.ItemStack} item
  * @param {Vec3d} pos
@@ -101,6 +109,7 @@ global.spawnItem = function (level, item, pos, random) {
     return entity;
 };
 
+//测试用
 //#region test
 ItemEvents.firstRightClicked("stick", event => {
     if (event.hand != "MAIN_HAND") return;

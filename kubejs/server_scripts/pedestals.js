@@ -6,7 +6,7 @@ BlockEvents.rightClicked(event => {
 });
 
 /**
- *
+ *  打开展示台设置界面
  * @param {Internal.ServerPlayer} player
  * @param {Internal.BlockContainerJS} block
  */
@@ -129,10 +129,11 @@ function pedestalInteract(player, block) {
 }
 
 /**
- *
+ * 生成展示台方法
  * @param {Internal.LevelKJS} level
  * @param {BlockPos} pos
  * @param {{type:string, item:Internal.ItemStack, price:number, id:string}} data
+ * @returns {Internal.BlockContainerJS} block
  */
 global.spawnPedestal = function (level, pos, data) {
     let block = level.getBlock(pos);
@@ -144,4 +145,5 @@ global.spawnPedestal = function (level, pos, data) {
     block.entity.persistentData.putString("pedestalType", type);
     block.inventory.setStackInSlot(0, item);
     if (price) block.entity.persistentData.putInt("price", price);
+    return block;
 };

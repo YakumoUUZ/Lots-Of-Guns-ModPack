@@ -1,4 +1,5 @@
 /**
+ * 玩家获得物品
  * @param {Internal.ServerPlayer} player
  * @param {Internal.ItemStack} item
  * @returns {boolean} success
@@ -10,6 +11,7 @@ global.playerGetItem = function (player, item, slot) {
     }
     let itemId = item.id;
     slot = slot || -1;
+    //如果是金币
     if (global.coinsMap[itemId]) {
         let coin = new global.PlayerCoin(player);
         coin.add(global.coinsMap[itemId] * item.getCount());
@@ -21,31 +23,36 @@ global.playerGetItem = function (player, item, slot) {
         // console.log("Coins: " + coin.get());
         return true;
     }
+    //如果是遗物
     if (item.hasTag("relic")) {
         global.playerAddRelic(player, itemId, item.getCount());
         return true;
     }
+    //如果是武器
     if (item.hasTag("weapon")) {
         if (player.inventory.count("#weapon") < 2) {
+            //玩家武器小于上限,直接拾取
             player.inventory.add(slot, item.copy());
             return true;
         } else if (player.mainHandItem.hasTag("weapon")) {
+            //玩家武器达到上限,并且手持武器,将手持武器掉落,然后获得新武器
             global.spawnItem(player.level, player.x, player.y, player.z, player.mainHandItem.copy());
             player.inventory.removeFromSelected(true);
             player.inventory.add(player.inventory.selected, item.copy());
             return true;
         } else {
+            //玩家武器达到上限,并且没有手持武器,提示武器上限
             player.sendSystemMessage(Text.translate("warning.kubejs.tooManyWeapons", (2).toString()).red(), true);
             return false;
         }
-    } else {
-        player.inventory.add(slot, item.copy());
     }
+    //其他物品
+    player.inventory.add(slot, item.copy());
     return true;
 };
 
 /**
- *
+ *  监听玩家拾取物品事件
  * @param {Internal.EntityItemPickupEvent} event
  */
 global.itemPickUp = function (event) {
@@ -53,13 +60,14 @@ global.itemPickUp = function (event) {
     let item = entity.item;
     /** @type {Internal.ServerPlayer} */
     let player = event.entity;
+    //如果没有自动拾取标签,只有当右键物品实体时拾取
     if (!(item.hasTag("autopickup") || entity.tags.contains("pickup"))) {
         event.setCanceled(true);
         return;
     }
     //重置标签,防止未拾取时的问题
     if (entity.tags.contains("pickup")) entity.removeTag("pickup");
-    //处理金币拾取
+    //处理玩家获得物品
     let itemId = item.id;
     console.log("Picked up " + itemId);
     if (!global.playerGetItem(player, item)) {

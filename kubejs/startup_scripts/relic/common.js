@@ -7,6 +7,7 @@ global.playerEventsMap = {};
 
 global.playerRelicsMap = {};
 
+//遗物基类
 function Relic(name) {
     this.name = name;
     this.id = global.relicPrefix + name;
@@ -14,12 +15,12 @@ function Relic(name) {
     this.texture = "minecraft:item/diamond";
 }
 
+//获取遗物等级
 Relic.prototype.lvl = function (player) {
     return global.getPlayerRelic(player, this.name) || 0;
 };
 
-Relic.prototype.onPlayerGetRelic = function (data) {};
-
+//继承
 function inherit(child, parent) {
     let prototype = object(parent.prototype);
     prototype.constructor = child;
@@ -35,32 +36,58 @@ function object(o) {
     return new F();
 }
 
+/**
+ * 根据名称获取遗物id
+ * @param {string} relicName 
+ * @returns {string} id
+ */
 global.getRelicId = function (relicName) {
     return global.relicMap[relicName].id;
 };
 
+/**
+ * 根据id获取遗物名称
+ * @param {string} relicId 
+ * @returns {string} name
+ */
 global.getRelicName = function (relicId) {
     if (relicId.startsWith(global.relicPrefix)) relicId = relicId.substring(global.relicPrefix.length());
     return relicId;
 };
 
+/**
+ * 获取玩家的遗物表
+ * @param {Internal.Player} player 
+ * @returns {{string: number}}
+ */
 global.getPlayerRelicMap = function (player) {
     if (!(player instanceof $String)) player = player.stringUuid;
     if (!global.playerRelicsMap[player]) global.playerRelicsMap[player] = {};
     return global.playerRelicsMap[player];
 };
 
+/**
+ * 获取玩家的遗物数量
+ * @param {Internal.Player} player 
+ * @param {string} relicName 
+ * @returns {number} number
+ */
 global.getPlayerRelic = function (player, relicName) {
     let playerRelics = global.getPlayerRelicMap(player);
     return playerRelics[relicName] || 0;
 };
 
+/**
+ * 初始化遗物
+ * @param {*} relicClass 
+ */
 function initRelic(relicClass) {
     let relic = new relicClass();
     global.relicMap[relic.name] = relic;
 }
 
 /**
+ * 从nbt中读取玩家的遗物信息
  * @param {Internal.Player} player 
  */
 global.readRelicsFromNbt = function (player) {
@@ -72,6 +99,12 @@ global.readRelicsFromNbt = function (player) {
     }
 }
 
+/**
+ * 推送事件
+ * @param {Internal.Player} player 
+ * @param {string} eventName 
+ * @param {*} data 
+ */
 global.postEvent = function (player, eventName, data) {
     if (!(player instanceof $String)) player = player.stringUuid;
     console.log(`postEvent: ${eventName} to ${player} with data ${data}`);
