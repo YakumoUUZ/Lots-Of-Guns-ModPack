@@ -22,7 +22,7 @@ global.playerGetItem = function (player, item, slot) {
         return true;
     }
     if (item.hasTag("relic")) {
-        global.plyerAddRelic(player, itemId, item.getCount());
+        global.playerAddRelic(player, itemId, item.getCount());
         return true;
     }
     if (item.hasTag("weapon")) {

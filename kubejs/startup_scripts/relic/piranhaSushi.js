@@ -15,9 +15,9 @@ PiranhaSushi.prototype.onPlayerKillEntity = function (data) {
     let event = data.event;
     /** @type {Internal.Player} */
     let player = data.player;
-    let value = this.value(player.getStringUuid());
-    let number = parseInt(value);
-    number += Math.random() > value - number ? 1 : 0;
+    let value = parseFloat(this.value(player.stringUuid).toFixed(1));
+    let number = Math.floor(value);
+    number += Math.random() < value - number ? 1 : 0;
     if (number > 10) {
         global.spawnItem(player.level, this.sushi.copyWithCount(number), event.entity.position(), true);
     } else {

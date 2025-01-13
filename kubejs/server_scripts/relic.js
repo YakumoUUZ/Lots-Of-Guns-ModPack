@@ -4,13 +4,13 @@ function addRelic(player, relicName, count) {
         player.tell("Invalid relic name");
         return 0;
     }
-    global.plyerAddRelic(player, relicName, count);
+    global.playerAddRelic(player, relicName, count);
     player.tell(`${relicName}: ${global.getPlayerRelic(player.stringUuid, relicName)}`);
     return 1;
 }
 
 function removeRelic(player, relicName, count) {
-    console.log(`Removing ${relicName} x ${count || 1} from ${player.name}`);
+    console.log(`Removing ${relicName} x ${count || "all"} from ${player.name}`);
     if (!global.relicMap[relicName]) {
         player.tell("Invalid relic name");
         return 0;
@@ -28,6 +28,16 @@ function setRelicCount(player, relicName, count) {
     }
     global.playerSetRelicCount(player, relicName, count);
     player.tell(`${relicName}: ${global.getPlayerRelic(player.stringUuid, relicName)}`);
+    return 1;
+}
+
+function removeAllRelics(player) {
+    console.log(`Removing all relics from ${player.name}`);
+    let playerRelics = global.getPlayerRelicMap(player.stringUuid);
+    for (const relicName in playerRelics) {
+        global.playerRemoveRelic(player, relicName);
+    }
+    player.tell("All relics removed");
     return 1;
 }
 
@@ -127,10 +137,7 @@ ServerEvents.commandRegistry(event => {
                     .requires(src => src.hasPermission(Commands.LEVEL_ADMINS))
                     .executes(ctx => {
                         let player = ctx.source.playerOrException;
-                        global.playerRelicsMap[player.stringUuid] = {};
-                        player.persistentData.remove("relic");
-                        player.tell("All relics removed");
-                        return 1;
+                        return removeAllRelics(player);
                     })
             )
     );
@@ -141,7 +148,7 @@ ServerEvents.commandRegistry(event => {
  * @param {String} relicName
  * @param {Number} count
  */
-global.plyerAddRelic = function (player, relicName, count) {
+global.playerAddRelic = function (player, relicName, count) {
     relicName = global.getRelicName(relicName);
     count = count || 1;
     let playerRelics = global.getPlayerRelicMap(player);
@@ -162,7 +169,7 @@ global.playerRemoveRelic = function (player, relicName, count) {
     let playerRelics = global.getPlayerRelicMap(player);
     if (!playerRelics[relicName]) return 0;
     let relicCount = global.getPlayerRelic(player, relicName);
-    count = Math.min(relicCount, count || 1);
+    count = count ? Math.min(relicCount, count) : relicCount;
     playerRelics[relicName] -= count;
     player.persistentData.relic.putInt(relicName, playerRelics[relicName]);
     if (playerRelics[relicName] <= 0) global.playerLoseRelic(player, relicName);
@@ -180,6 +187,9 @@ global.playerSetRelicCount = function (player, relicName, count) {
     let playerRelicCount = global.getPlayerRelic(player, relicName);
     if (playerRelicCount > count) global.playerRemoveRelic(player, relicName, playerRelicCount - count);
     else if (playerRelicCount < count) global.playerAddRelic(player, relicName, count - playerRelicCount);
+    else {
+        player.persistentData.relic.putInt(relicName, global.getPlayerRelicMap(player)[relicName]);
+    }
     return playerRelicCount - count;
 };
 
@@ -228,6 +238,10 @@ global.playerLoseRelic = function (player, relicName) {
     }
     global.postEvent(player, "onPlayerLoseRelic", { player: player, relicName: relicName });
 };
+
+PlayerEvents.loggedIn(event => {
+    global.readRelicsFromNbt(event.player);
+});
 
 EntityEvents.death(event => {
     let player = event.source.actual;

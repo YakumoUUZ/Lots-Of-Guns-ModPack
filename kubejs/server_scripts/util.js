@@ -113,7 +113,7 @@ ItemEvents.firstRightClicked("stick", event => {
     // level.getBlock(pos).set("air");
     // global.playerRelicsMap[player.stringUuid] = {};
     // player.persistentData.remove("relic");
-    global.playerRemoveRelic(player, "piranha_sushi");
+    // global.playerRemoveRelic(player, "piranha_sushi");
     console.log(global.getPlayerRelicMap(player));
     player.swing();
 });

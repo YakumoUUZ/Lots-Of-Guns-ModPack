@@ -48,11 +48,11 @@ function pedestalStettingGUI(player, block) {
         //设置展示架上的物品
         pedestalItemSlot.setLeftClicked(e => {
             pedestalItemSlot.setItem(Item.empty);
-            inventory.setStackInSlot(0, Item.empty);
+            block.inventory.setStackInSlot(0, Item.empty);
         });
         gui.inventoryClicked = function (clickEvent) {
             pedestalItemSlot.setItem(clickEvent.item);
-            inventory.setStackInSlot(0, clickEvent.item);
+            block.inventory.setStackInSlot(0, clickEvent.item);
         };
         //价格相关的操作
         function addPriceFun(factor) {

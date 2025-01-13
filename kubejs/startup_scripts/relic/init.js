@@ -10,3 +10,9 @@ StartupEvents.registry("item", event => {
         .translationKey(`item.kubejs.relic.${relic.name}`)
     }
 });
+
+if(global.playerSetRelicCount){
+    Utils.server.playerList.players.forEach(player => {
+        global.readRelicsFromNbt(player)
+    })
+}

@@ -15,7 +15,7 @@ function Relic(name) {
 }
 
 Relic.prototype.lvl = function (player) {
-    return global.playerRelicsMap[player][this.name] || 0;
+    return global.getPlayerRelic(player, this.name) || 0;
 };
 
 Relic.prototype.onPlayerGetRelic = function (data) {};
@@ -58,6 +58,18 @@ global.getPlayerRelic = function (player, relicName) {
 function initRelic(relicClass) {
     let relic = new relicClass();
     global.relicMap[relic.name] = relic;
+}
+
+/**
+ * @param {Internal.Player} player 
+ */
+global.readRelicsFromNbt = function (player) {
+    if (!player.persistentData.contains("relic")) return;
+    let relics = player.persistentData.relic
+    for (let relicName in relics){
+        let relicLvl = relics[relicName];
+        global.playerSetRelicCount(player, relicName, relicLvl)
+    }
 }
 
 global.postEvent = function (player, eventName, data) {
