@@ -1,12 +1,13 @@
-let $SoundEvents = Java.loadClass("net.minecraft.sounds.SoundEvents");
-let $ItemEntity = Java.loadClass("net.minecraft.world.entity.item.ItemEntity");
-
 /**
  * @param {Internal.ServerPlayer} player
  * @param {Internal.ItemStack} item
  * @returns {boolean} success
  */
 global.playerGetItem = function (player, item, slot) {
+    if (!item) {
+        console.error("No item");
+        return false;
+    }
     let itemId = item.id;
     slot = slot || -1;
     if (global.coinsMap[itemId]) {
@@ -20,12 +21,16 @@ global.playerGetItem = function (player, item, slot) {
         // console.log("Coins: " + coin.get());
         return true;
     }
+    if (item.hasTag("relic")) {
+        global.plyerAddRelic(player, itemId, item.getCount());
+        return true;
+    }
     if (item.hasTag("weapon")) {
         if (player.inventory.count("#weapon") < 2) {
             player.inventory.add(slot, item.copy());
             return true;
         } else if (player.mainHandItem.hasTag("weapon")) {
-            new $ItemEntity(player.level, player.x, player.y, player.z, player.mainHandItem.copy(), 0, 0, 0).spawn();
+            global.spawnItem(player.level, player.x, player.y, player.z, player.mainHandItem.copy());
             player.inventory.removeFromSelected(true);
             player.inventory.add(player.inventory.selected, item.copy());
             return true;

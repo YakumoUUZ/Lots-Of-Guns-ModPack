@@ -1,3 +1,8 @@
+//priority: 1000
+const $SoundEvents = Java.loadClass("net.minecraft.sounds.SoundEvents");
+const $ItemEntity = Java.loadClass("net.minecraft.world.entity.item.ItemEntity");
+const $String = Java.loadClass("java.lang.String");
+
 global.coinsMap = {
     "minecraft:emerald": 1,
     "minecraft:diamond": 5,
