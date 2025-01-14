@@ -1,9 +1,19 @@
 BlockEvents.rightClicked(event => {
-    let { player, block } = event;
+    if (event.block && event.block.id.startsWith("pedestals:")) event.cancel();
+});
+
+ItemEvents.firstRightClicked(event => {
+    if (event.hand != "MAIN_HAND") return;
+    /** @type {Internal.ServerPlayer} */
+    let player = event.player;
+    let block = player.rayTrace(player.getEntityReach()).block;
     if (!(block && block.id.startsWith("pedestals:"))) return;
     pedestalInteract(player, block);
-    event.cancel();
 });
+
+function menuItem(item, name) {
+    return item.setHoverName(Text.of(name)).withNBT({ chestMenuItem: true, HideFlags: 63 });
+}
 
 /**
  *  打开展示台设置界面
@@ -26,11 +36,11 @@ function pedestalStettingGUI(player, block) {
         }
         //刷新界面
         function refresh() {
-            pedestalTypeSlot.setItem(global.pedestalsTypeIconMap[pedestalType()].copy().setHoverName(Text.of(`Current Type: ${pedestalType()}`)));
+            pedestalTypeSlot.setItem(menuItem(global.pedestalsTypeIconMap[pedestalType()].copy(), `Current Type: ${pedestalType()}`));
             if (pedestalType() == "shop") {
                 if (!block.entity.persistentData.contains("price")) block.entity.persistentData.putInt("price", 1);
-                priceSlot.setItem(Item.of("minecraft:emerald").setHoverName(Text.of(`price: ${block.entity.persistentData.getInt("price")}`)));
-                priceActionSlot.setItem(Item.of("minecraft:emerald").setHoverName(Text.of(`price pre action: ${pricePerActionList[pricePerActionIndex]}`)));
+                priceSlot.setItem(menuItem(Item.of("minecraft:emerald"), `price: ${block.entity.persistentData.getInt("price")}`));
+                priceActionSlot.setItem(menuItem(Item.of("minecraft:emerald"), `price pre action: ${pricePerActionList[pricePerActionIndex]}`));
             } else {
                 priceSlot.setItem(Item.empty);
                 priceActionSlot.setItem(Item.empty);
@@ -40,7 +50,7 @@ function pedestalStettingGUI(player, block) {
         //设置展示架的类型
         for (let index = 0; index < global.pedestalsTypeList.length; index++) {
             let type = global.pedestalsTypeList[index];
-            gui.button(index, 0, global.pedestalsTypeIconMap[type], type, () => {
+            gui.button(index, 0, menuItem(global.pedestalsTypeIconMap[type], type), type, () => {
                 block.entity.persistentData.pedestalType = type;
                 refresh();
             });
@@ -97,11 +107,14 @@ function pedestalInteract(player, block) {
     //根据展示台类型执行相应的操作
     if (pedestalItem.isEmpty()) return;
     switch (pedestalType()) {
-        case global.pedestalsTypeList[0]:
-            if (global.playerGetItem(player, pedestalItem)) {
-                inventory.setStackInSlot(0, Item.empty);
+        case global.pedestalsTypeList[0]: {
+            let itemEntity = global.playerGetItem(player, pedestalItem);
+            if (itemEntity) {
+                inventory.setStackInSlot(0, itemEntity.item || Item.empty);
+                if (itemEntity.discard) itemEntity.discard();
             }
             break;
+        }
         case global.pedestalsTypeList[1]: {
             let weapon = player.inventory.find("#weapon");
             if (weapon > 0) {
@@ -117,8 +130,10 @@ function pedestalInteract(player, block) {
             let playerCoin = new global.PlayerCoin(player);
             if (playerCoin.get() >= price) {
                 playerCoin.add(-price);
-                block.entity.persistentData.pedestalType = global.pedestalsTypeList[0];
-                pedestalInteract(block, player);
+                block.inventory.setStackInSlot(0, Item.empty);
+                global.spawnPedestal(player.level, block.pos, { type: global.pedestalsTypeList[0], item: pedestalItem });
+                // block.entity.persistentData.pedestalType = global.pedestalsTypeList[0];
+                // pedestalInteract(player, block);
             } else {
                 player.sendSystemMessage(Text.translate("warning.kubejs.notEnoughCoins").red(), true);
             }
@@ -141,7 +156,19 @@ global.spawnPedestal = function (level, pos, data) {
     if (!type || !item) {
         console.error(`spawnPedestal: type: ${type}, item: ${item}, price: ${price}, id: ${id}`);
     }
-    block.set(id || "pedestals:pedestal");
+    if (!id) {
+        if (type != global.pedestalsTypeList[0]) {
+            id = global.pedestalsTypeItemMap[type];
+        } else {
+            for (let tag in global.pedestalsTagItemMap) {
+                if (item.hasTag(tag)) {
+                    id = global.pedestalsTagItemMap[tag];
+                    break;
+                }
+            }
+        }
+    }
+    block.set(id || global.pedestalsTypeItemMap[global.pedestalsTypeList[0]]);
     block.entity.persistentData.putString("pedestalType", type);
     block.inventory.setStackInSlot(0, item);
     if (price) block.entity.persistentData.putInt("price", price);

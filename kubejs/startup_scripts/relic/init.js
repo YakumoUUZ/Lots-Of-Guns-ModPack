@@ -3,12 +3,12 @@
 StartupEvents.registry("item", event => {
     for (const relicName in global.relicMap) {
         let relic = global.relicMap[relicName];
-        event
+        let relicItem = event
         .create(relic.id)
+        // .translationKey(`item.kubejs.relic.${relic.name}`) 不知为何无效
         .rarity(relic.rarity)
         .texture(relic.texture)
         .tag('relic')
-        .translationKey(`item.kubejs.relic.${relic.name}`)
     }
 });
 

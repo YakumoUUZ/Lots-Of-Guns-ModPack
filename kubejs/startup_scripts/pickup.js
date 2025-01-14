@@ -16,9 +16,7 @@ global.playerGetItem = function (player, item, slot) {
         let coin = new global.PlayerCoin(player);
         coin.add(global.coinsMap[itemId] * item.getCount());
         //TODO 音效不知道为什么没效果
-        console.log(player.level);
-        console.log(Utils.getSound("minecraft:entity.player.levelup"));
-        player.playSound(Utils.getSound("minecraft:entity.player.levelup"), 1, 1);
+        // player.level.playSound(player, player, player.getSoundSource(), "minecraft:entity.player.levelup", 1, 1);
         // player.level.runCommandSilent(`playsound minecraft:entity.player.levelup player ${player.getUsername().toString()}`);
         // console.log("Coins: " + coin.get());
         return true;
@@ -36,10 +34,10 @@ global.playerGetItem = function (player, item, slot) {
             return true;
         } else if (player.mainHandItem.hasTag("weapon")) {
             //玩家武器达到上限,并且手持武器,将手持武器掉落,然后获得新武器
-            global.spawnItem(player.level, player.x, player.y, player.z, player.mainHandItem.copy());
+            let itemEntity = global.spawnItem(player.level, player.mainHandItem.copy(), player.position());
             player.inventory.removeFromSelected(true);
             player.inventory.add(player.inventory.selected, item.copy());
-            return true;
+            return itemEntity;
         } else {
             //玩家武器达到上限,并且没有手持武器,提示武器上限
             player.sendSystemMessage(Text.translate("warning.kubejs.tooManyWeapons", (2).toString()).red(), true);
@@ -55,7 +53,7 @@ global.playerGetItem = function (player, item, slot) {
  *  监听玩家拾取物品事件
  * @param {Internal.EntityItemPickupEvent} event
  */
-global.itemPickUp = function (event) {
+global.onItemPickUpEvent = function (event) {
     let entity = event.item;
     let item = entity.item;
     /** @type {Internal.ServerPlayer} */
@@ -77,12 +75,3 @@ global.itemPickUp = function (event) {
     }
 };
 
-function tryCatch(fun, args) {
-    try {
-        fun(args);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-ForgeEvents.onEvent("net.minecraftforge.event.entity.player.EntityItemPickupEvent", e => tryCatch(global.itemPickUp, e));

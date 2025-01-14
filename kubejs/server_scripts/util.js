@@ -109,21 +109,36 @@ global.spawnItem = function (level, item, pos, random) {
     return entity;
 };
 
+/**
+ * 
+ * @param {*} player 
+ * @param {*} sound 
+ * @param {*} pos 
+ * @param {*} volume 
+ * @param {*} pitch 
+ */
+global.playSound = function (player, sound, pos, volume, pitch) {
+    
+}
+
 //测试用
 //#region test
 ItemEvents.firstRightClicked("stick", event => {
     if (event.hand != "MAIN_HAND") return;
-    const player = event.player;
+    let player = event.player;
     /** @type {Internal.ServerLevel} */
     const level = player.level;
-    let pos = player.rayTrace(player.getEntityReach()).block?.pos;
-    if (!pos) return;
+    // let pos = player.rayTrace(player.getEntityReach()).block?.pos;
+    // if (!pos) return;
     // global.loadStructure(level, "kubejs:entrance", pos);
     // level.getBlock(pos).set("air");
     // global.playerRelicsMap[player.stringUuid] = {};
     // player.persistentData.remove("relic");
     // global.playerRemoveRelic(player, "piranha_sushi");
-    console.log(global.getPlayerRelicMap(player));
+    console.log(global.pedestalsTypeIconMap);
+    // console.log(level.playSound);
+    // level["playSound(net.minecraft.world.entity.player.Player,net.minecraft.core.BlockPos,net.minecraft.sounds.SoundEvent,net.minecraft.sounds.SoundSource,float,float)"](null, player.blockPosition(), "minecraft:entity.player.levelup",  player.getSoundSource(), 1, 1)
+    // player.level.playSound(player, player.blockPosition(), "minecraft:entity.player.levelup",  player.getSoundSource(), 1, 1)
     player.swing();
 });
 
@@ -131,6 +146,7 @@ ItemEvents.firstRightClicked("stick", event => {
  * @param {Internal.Player} player
  */
 global.testFunc = function (player) {
+    console.log(player.mainHandItem.item.nameKey);
     console.log(player.stringUuid instanceof $String);
     console.log(global.getPlayerRelicMap(player));
 };

@@ -1,5 +1,6 @@
 {
     "warning.kubejs.tooManyWeapons": "You can't equip more than %s weapons at once!",
     "warning.kubejs.notEnoughCoins": "You don't have enough coins to buy this item!",
-    "gui.kubejs.pedestalSetting.title": "pedestal setting"
+    "gui.kubejs.pedestalSetting.title": "pedestal setting",
+    "item.kubejs.relic_piranha_sushi": "Piranha Sushi"
 }

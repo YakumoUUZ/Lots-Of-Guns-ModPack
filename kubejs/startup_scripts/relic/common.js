@@ -1,9 +1,6 @@
 //priority: 100
 global.relicPrefix = "kubejs:relic_";
 global.relicMap = {};
-global.eventList = ["onPlayerGetRelic", "onPlayerLoseRelic", "onPlayerAddRelic", "onPlayerRemoveRelic", "onPlayerKillEntity"];
-
-global.playerEventsMap = {};
 
 global.playerRelicsMap = {};
 
@@ -99,20 +96,3 @@ global.readRelicsFromNbt = function (player) {
     }
 }
 
-/**
- * 推送事件
- * @param {Internal.Player} player 
- * @param {string} eventName 
- * @param {*} data 
- */
-global.postEvent = function (player, eventName, data) {
-    if (!(player instanceof $String)) player = player.stringUuid;
-    console.log(`postEvent: ${eventName} to ${player} with data ${data}`);
-    let playerEvents = global.playerEventsMap[player];
-    if (!(playerEvents && playerEvents[eventName])) return;
-    if (playerEvents[eventName] && Object.keys(playerEvents[eventName]).length > 0) {
-        for (const relicName in playerEvents[eventName]) {
-            global.relicMap[relicName][eventName](data);
-        }
-    }
-};
