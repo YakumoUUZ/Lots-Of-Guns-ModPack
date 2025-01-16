@@ -51,7 +51,8 @@ function pedestalStettingGUI(player, block) {
         for (let index = 0; index < global.pedestalsTypeList.length; index++) {
             let type = global.pedestalsTypeList[index];
             gui.button(index, 0, menuItem(global.pedestalsTypeIconMap[type], type), type, () => {
-                block.entity.persistentData.pedestalType = type;
+                block.inventory.setStackInSlot(0, Item.empty);
+                block = global.spawnPedestal(player.level, block.pos, { type: type, item: pedestalItemSlot.getItem() });
                 refresh();
             });
         }
@@ -116,6 +117,12 @@ function pedestalInteract(player, block) {
             break;
         }
         case global.pedestalsTypeList[1]: {
+            let item = pedestalItem.copy();
+            if (item.item.activateKeyLevel1 && !item.nbt?.key_activated) item.item.activateKeyLevel1(player.server, item, 4);
+            global.playerGetItem(player, item);
+            break;
+        }
+        case global.pedestalsTypeList[2]: {
             let weapon = player.inventory.find("#weapon");
             if (weapon > 0) {
                 player.inventory.removeItem(weapon, 1);
@@ -125,7 +132,7 @@ function pedestalInteract(player, block) {
             }
             break;
         }
-        case global.pedestalsTypeList[2]: {
+        case global.pedestalsTypeList[3]: {
             let price = block.entity.persistentData.getInt("price");
             let playerCoin = new global.PlayerCoin(player);
             if (playerCoin.get() >= price) {
@@ -147,7 +154,7 @@ function pedestalInteract(player, block) {
  * 生成展示台方法
  * @param {Internal.LevelKJS} level
  * @param {BlockPos} pos
- * @param {{type:string, item:Internal.ItemStack, price:number, id:string}} data
+ * @param {{type:string, item:Internal.ItemStack, price?:number, id?:string}} data
  * @returns {Internal.BlockContainerJS} block
  */
 global.spawnPedestal = function (level, pos, data) {

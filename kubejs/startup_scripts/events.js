@@ -9,6 +9,8 @@ function tryCatch(fun, args) {
 
 ForgeEvents.onEvent("net.minecraftforge.event.entity.player.EntityItemPickupEvent", e => tryCatch(global.onItemPickUpEvent, e));
 ForgeEvents.onEvent("net.minecraftforge.event.entity.player.ItemTooltipEvent", e => tryCatch(global.onItemTooltipEvent, e));
+ForgeEvents.onEvent("com.tacz.guns.api.event.common.EntityHurtByGunEvent$Pre", e => tryCatch(global.onEntityHurtByGunEvent, e));
+ForgeEvents.onEvent("com.tacz.guns.api.event.common.GunReloadEvent", e => tryCatch(global.onGunReloadEvent, e));
 //#endregion
 
 global.eventList = ["onPlayerGetRelic", "onPlayerLoseRelic", "onPlayerAddRelic", "onPlayerRemoveRelic", "onPlayerKillEntity"];
@@ -43,10 +45,10 @@ global.postEvent = function (player, eventName, data) {
 
 /**
  * 注册全局事件
- * @param {string} eventName 
- * @param {string} handlerId 
- * @param {function({}):void} handler 
- * @returns 
+ * @param {string} eventName
+ * @param {string} handlerId
+ * @param {function({}):void} handler
+ * @returns
  */
 global.addCommonEventHandler = function (eventName, handlerId, handler) {
     if (!global.commonEventsMap[eventName]) global.commonEventsMap[eventName] = {};

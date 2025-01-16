@@ -22,6 +22,7 @@ declare const global: {
     postEvent(player: Internal.Player, eventName: string, data: any): void;
     getPlayerRelicMap(player: Internal.Player): { [relicName: string]: number };
     loadStructure(level: Internal.ServerLevel, name: string, pos: BlockPos, [settings]: any): void;
+    spawnPedestal(level: Internal.ServerLevel, pos: BlockPos, data:{type:string, item:Internal.ItemStack, price?:number, id?:string}): Internal.BlockContainerJS;
     testFunc(player: Internal.Player): void;
     spawn_wave: {};
     door_action: {};
@@ -43,6 +44,5 @@ declare const global: {
     };
     onItemPickUpEvent: {};
     build_room: {};
-    spawnPedestal: {};
     room_function: {};
 };

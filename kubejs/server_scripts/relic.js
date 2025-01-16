@@ -280,9 +280,3 @@ PlayerEvents.loggedIn(event => {
     global.readRelicsFromNbt(event.player);
 });
 
-//监听实体死亡事件
-EntityEvents.death(event => {
-    let player = event.source.actual;
-    if (!player.isPlayer()) return;
-    global.postEvent(player, "onPlayerKillEntity", { player: player, event: event });
-});

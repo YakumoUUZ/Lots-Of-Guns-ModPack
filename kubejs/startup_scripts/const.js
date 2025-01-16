@@ -12,6 +12,7 @@ global.pedestalsTypeIconMap = {};
 
 global.pedestalsTypeItemMap = {
     normal: "pedestals:pedestal",
+    giver: "pedestals:smooth_stone_pedestal",
     firstWeapon: "pedestals:polished_diorite_pedestal",
     shop: "pedestals:cherry_planks_pedestal",
     readonly: "pedestals:quartz_pedestal",
@@ -32,6 +33,7 @@ global.pedestalsTypeList = {};
 function postInit(event){
     global.pedestalsTypeIconMap = {
         normal: Item.of("pedestals:pedestal"),
+        giver: Item.of('minecraft:glow_item_frame'),
         firstWeapon: Item.of("tacz:modern_kinetic_gun", { GunId: "tacz:m1911" }),
         shop: Item.of("minecraft:emerald"),
         readonly: Item.of("minecraft:item_frame"),
@@ -39,5 +41,7 @@ function postInit(event){
 
     global.pedestalsTypeList = Object.keys(global.pedestalsTypeIconMap);
 }
+
+if (global.isServerReady) postInit()
 
 StartupEvents.postInit(postInit)
