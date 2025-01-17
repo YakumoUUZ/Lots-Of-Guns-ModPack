@@ -15,17 +15,21 @@
   //     "surroundingMargin": 0,
   //     "surroundingBlocks": "default"
   // }
-  "spawn": {
-    "name": "spawn",
-    "file": "spawn.nbt",
-    "spawns": "default",
-  },
+  "spawn": null,
   
   "spawns": {
     "default": {
       "east": [],
       "south": [
-        [ 5, 3, 2 ]
+        [ 29, 25, 43 ]
+      ],
+      "north": [],
+      "west": []
+    },
+    "minimal": {
+      "east": [],
+      "south": [
+        [ 6, 2, 5 ]
       ],
       "north": [],
       "west": []
@@ -54,16 +58,16 @@
   // The list of templates being available. The first entry is the default template.
   "templates": [
     {
-      "name": "spawn",
-      "file": "spawn.nbt",
+      "name": "default",
+      "file": "default.nbt",
       "spawns": "default",
       "surroundingBlocks": "default",
       "spreads": "default"
     },
     {
-      "name": "default",
-      "file": "default.nbt",
-      "spawns": "default",
+      "name": "minimal",
+      "file": "minimal.nbt",
+      "spawns": "minimal",
       "surroundingBlocks": "default",
       "spreads": "default"
     }
