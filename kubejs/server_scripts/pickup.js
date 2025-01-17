@@ -58,13 +58,13 @@ global.playerGetItem = function (player, item, slot) {
     if (item.hasTag("weapon")) {
         if (player.inventory.count("#weapon") < 2) {
             //玩家武器小于上限,直接拾取
-            player.inventory.add(slot, item.copy().withNBT({"DummyAmmo": 9999}));
+            player.inventory.add(slot, item.copy().withNBT({ DummyAmmo: NBT.intTag(9999) }));
             return true;
         } else if (player.mainHandItem.hasTag("weapon")) {
             //玩家武器达到上限,并且手持武器,将手持武器掉落,然后获得新武器
             let itemEntity = global.spawnItem(player.level, player.mainHandItem.copy(), player.position());
             player.inventory.removeFromSelected(true);
-            player.inventory.add(player.inventory.selected, item.copy().withNBT({"DummyAmmo": 9999}));
+            player.inventory.add(player.inventory.selected, item.copy().withNBT({ DummyAmmo: NBT.intTag(9999) }));
             return itemEntity;
         } else {
             //玩家武器达到上限,并且没有手持武器,提示武器上限

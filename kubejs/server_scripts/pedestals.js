@@ -6,7 +6,7 @@ ItemEvents.firstRightClicked(event => {
     if (event.hand != "MAIN_HAND") return;
     /** @type {Internal.ServerPlayer} */
     let player = event.player;
-    let block = player.rayTrace(player.getEntityReach()).block;
+    let block = player.rayTrace(player.getBlockReach()).block;
     if (!(block && block.id.startsWith("pedestals:"))) return;
     pedestalInteract(player, block);
 });
@@ -124,7 +124,7 @@ function pedestalInteract(player, block) {
         }
         case global.pedestalsTypeList[2]: {
             let weapon = player.inventory.find("#weapon");
-            if (weapon > 0) {
+            if (weapon >= 0) {
                 player.inventory.removeItem(weapon, 1);
                 global.playerGetItem(player, pedestalItem, weapon);
             } else {
