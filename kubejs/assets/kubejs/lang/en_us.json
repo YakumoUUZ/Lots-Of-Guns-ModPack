@@ -2,5 +2,11 @@
     "warning.kubejs.tooManyWeapons": "You can't equip more than %s weapons at once!",
     "warning.kubejs.notEnoughCoins": "You don't have enough coins to buy this item!",
     "gui.kubejs.pedestalSetting.title": "pedestal setting",
-    "item.kubejs.relic_piranha_sushi": "Piranha Sushi"
+    "comment_": "-------------------------------------------RELIC-------------------------------------------",
+    "item.kubejs.relic_piranha_sushi": "Piranha Sushi",
+    "item.kubejs.relic_carrot_spice_of_life": "Carrot: Spice of Life",
+    "item.kubejs.relic_cola_mentos": "Cola Mentos",
+    "item.kubejs.relic_vampire_fang": "Vampire Fang",
+    "item.kubejs.relic_feeding_machine_servant": "Feeding Machine Servant",
+    "item.kubejs.relic_undead_totem_shard": "Undead Totem Shard"
 }

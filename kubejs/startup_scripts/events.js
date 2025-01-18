@@ -11,9 +11,21 @@ ForgeEvents.onEvent("net.minecraftforge.event.entity.player.EntityItemPickupEven
 ForgeEvents.onEvent("net.minecraftforge.event.entity.player.ItemTooltipEvent", e => tryCatch(global.onItemTooltipEvent, e));
 ForgeEvents.onEvent("com.tacz.guns.api.event.common.EntityHurtByGunEvent$Pre", e => tryCatch(global.onEntityHurtByGunEvent, e));
 ForgeEvents.onEvent("com.tacz.guns.api.event.common.GunReloadEvent", e => tryCatch(global.onGunReloadEvent, e));
+ForgeEvents.onEvent("com.tacz.guns.api.event.server.AmmoHitBlockEvent", e => tryCatch(global.onAmmoHitBlockEvent, e));
 //#endregion
 
-global.eventList = ["onPlayerGetRelic", "onPlayerLoseRelic", "onPlayerAddRelic", "onPlayerRemoveRelic", "onPlayerKillEntity"];
+global.eventList = [
+    "onPlayerGetRelic",
+    "onPlayerLoseRelic",
+    "onPlayerAddRelic",
+    "onPlayerRemoveRelic",
+    "onPlayerHurtEntity",
+    "onEntityHurtPlayer",
+    "onPlayerKillEntity",
+    "onEntityHurtByGun",
+    "onPlayerAmmoHitEntity",
+    "onPlayerAmmoHitBlock",
+];
 
 global.commonEventsMap = {};
 global.playerEventsMap = {};

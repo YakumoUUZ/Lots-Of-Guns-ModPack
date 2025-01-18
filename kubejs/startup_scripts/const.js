@@ -2,6 +2,8 @@
 const $SoundEvents = Java.loadClass("net.minecraft.sounds.SoundEvents");
 const $ItemEntity = Java.loadClass("net.minecraft.world.entity.item.ItemEntity");
 const $String = Java.loadClass("java.lang.String");
+const $AbstractGunItem = Java.loadClass("com.tacz.guns.api.item.gun.AbstractGunItem");
+const $ModernKineticGunScriptAPI = Java.loadClass("com.tacz.guns.item.ModernKineticGunScriptAPI");
 
 global.coinsMap = {
     "minecraft:emerald": 1,

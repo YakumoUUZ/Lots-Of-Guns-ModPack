@@ -106,7 +106,7 @@ ServerEvents.commandRegistry(event => {
                                     let player = ctx.source.playerOrException;
                                     let relicName = Arguments.STRING.getResult(ctx, "relic name");
                                     let count = Arguments.INTEGER.getResult(ctx, "count");
-                                    return setRelicCount(player, relicName, count);
+                                    return addRelic(player, relicName, count);
                                 })
                             )
                     )
@@ -170,110 +170,6 @@ ServerEvents.commandRegistry(event => {
             )
     );
 });
-
-/**
- * 玩家添加遗物方法,默认数量1
- * @param {Internal.Player} player
- * @param {String} relicName
- * @param {Number} [count]
- * @returns {Number} count
- */
-global.playerAddRelic = function (player, relicName, count) {
-    relicName = global.getRelicName(relicName);
-    count = count || 1;
-    let playerRelics = global.getPlayerRelicMap(player);
-    if (!playerRelics[relicName]) global.playerGetRelic(player, relicName);
-    playerRelics[relicName] += count;
-    player.persistentData.relic.putInt(relicName, playerRelics[relicName]);
-    global.postEvent(player, "onPlayerAddRelic", { player: player, relicName: relicName, count: count });
-    return count;
-};
-
-/**
- * 玩家移除遗物方法,默认全部
- * @param {Internal.Player} player
- * @param {String} relicName
- * @param {Number} [count]
- * @returns {Number} count
- */
-global.playerRemoveRelic = function (player, relicName, count) {
-    relicName = global.getRelicName(relicName);
-    let playerRelics = global.getPlayerRelicMap(player);
-    if (!playerRelics[relicName]) return 0;
-    let relicCount = global.getPlayerRelic(player, relicName);
-    count = count ? Math.min(relicCount, count) : relicCount;
-    playerRelics[relicName] -= count;
-    player.persistentData.relic.putInt(relicName, playerRelics[relicName]);
-    if (playerRelics[relicName] <= 0) global.playerLoseRelic(player, relicName);
-
-    global.postEvent(player, "onPlayerRemoveRelic", { player: player, relicName: relicName, count: count });
-    return count;
-};
-
-/**
- * 玩家设置遗物数量方法
- * @param {Internal.Player} player
- * @param {String} relicName
- * @param {Number} count
- * @returns {Number} count
- */
-global.playerSetRelicCount = function (player, relicName, count) {
-    let playerRelicCount = global.getPlayerRelic(player, relicName);
-    if (playerRelicCount > count) global.playerRemoveRelic(player, relicName, playerRelicCount - count);
-    else if (playerRelicCount < count) global.playerAddRelic(player, relicName, count - playerRelicCount);
-    else {
-        player.persistentData.relic.putInt(relicName, global.getPlayerRelicMap(player)[relicName]);
-    }
-    return playerRelicCount - count;
-};
-
-/**
- * 玩家获得遗物方法
- * @param {Internal.Player} player
- * @param {String} relicName
- */
-global.playerGetRelic = function (player, relicName) {
-    relicName = global.getRelicName(relicName);
-    let playerRelics = global.getPlayerRelicMap(player);
-    playerRelics[relicName] = 0;
-    if (!player.persistentData.contains("relic")) player.persistentData.merge({ relic: {} });
-    player.persistentData.relic.putInt(relicName, 0);
-
-    let relic = global.relicMap[relicName];
-    let uuid = player.stringUuid;
-    if (!global.playerEventsMap[uuid]) global.playerEventsMap[uuid] = {};
-    let eventMap = global.playerEventsMap[uuid];
-    for (const eventName of global.eventList) {
-        if (relic[eventName]) {
-            if (!eventMap[eventName]) eventMap[eventName] = {};
-            eventMap[eventName][relicName] = true;
-        }
-    }
-    global.postEvent(player, "onPlayerGetRelic", { player: player, relicName: relicName });
-};
-
-/**
- * 玩家失去遗物方法
- * @param {Internal.Player} player
- * @param {String} relicName
- */
-global.playerLoseRelic = function (player, relicName) {
-    relicName = global.getRelicName(relicName);
-    let playerRelics = global.getPlayerRelicMap(player);
-    delete playerRelics[relicName];
-    player.persistentData.relic.remove(relicName);
-
-    let relic = global.relicMap[relicName];
-    let uuid = player.stringUuid;
-    let eventMap = global.playerEventsMap[uuid];
-    for (const eventName of global.eventList) {
-        if (relic[eventName]) {
-            if (!eventMap[eventName]) continue;
-            delete eventMap[eventName][relicName];
-        }
-    }
-    global.postEvent(player, "onPlayerLoseRelic", { player: player, relicName: relicName });
-};
 
 //玩家登入时,读取nbt设置遗物
 PlayerEvents.loggedIn(event => {

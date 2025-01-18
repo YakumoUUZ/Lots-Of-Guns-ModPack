@@ -2,5 +2,11 @@
     "warning.kubejs.tooManyWeapons": "你不能同时拥有超过 %s 个武器!",
     "warning.kubejs.notEnoughCoins": "你没有足够的金币购买这件物品!",
     "gui.kubejs.pedestalSetting.title": "展示台设置",
-    "item.kubejs.relic_piranha_sushi": "食人鱼寿司"
+    "comment_": "-------------------------------------------遗物-------------------------------------------",
+    "item.kubejs.relic_piranha_sushi": "食人鱼寿司",
+    "item.kubejs.relic_carrot_spice_of_life": "胡萝卜:生活调味料",
+    "item.kubejs.relic_cola_mentos": "可乐味曼妥思",
+    "item.kubejs.relic_vampire_fang": "吸血鬼尖牙",
+    "item.kubejs.relic_feeding_machine_servant": "供弹机仆",
+    "item.kubejs.relic_undead_totem_shard": "不死图腾碎片"
 }
