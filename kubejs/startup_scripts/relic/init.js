@@ -9,8 +9,9 @@ StartupEvents.registry("item", event => {
             .rarity(relic.rarity)
             .tag("relic");
         if (relic.texture) builder.texture(relic.texture);
-        if (!relic.item) relic.item = Item.of(relic.id);
     }
+
+    event.create(global.relicMap.piranha_sushi.sushi).tag("autopickup");
 });
 
 //重载startup脚本时, 读取玩家的relic数量

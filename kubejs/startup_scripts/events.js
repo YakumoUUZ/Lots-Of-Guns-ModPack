@@ -25,6 +25,8 @@ global.eventList = [
     "onEntityHurtByGun",
     "onPlayerAmmoHitEntity",
     "onPlayerAmmoHitBlock",
+    "onItemPickupPre",
+    "onCoinsPickup",
 ];
 
 global.commonEventsMap = {};

@@ -10,7 +10,7 @@ VampireFang.prototype.value = function (player) {
 
 VampireFang.prototype.onPlayerHurtEntity = function (data) {
     let { player, damage } = data;
-    player.setHealth(player.getHealth() + damage * this.value(player));
+    player.heal(damage * this.value(player));
 };
 
 initRelic(VampireFang);

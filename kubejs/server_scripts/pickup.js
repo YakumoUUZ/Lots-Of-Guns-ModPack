@@ -37,12 +37,19 @@ global.playerGetItem = function (player, item, slot) {
         console.error("No item");
         return false;
     }
+    let data = { player: player, item: item, slot: slot };
+    global.postEvent(player, "onItemPickupPre", data);
+    item = data.item;
+    if (data.canceled) return false;
+    if (!data.item) return true;
     let itemId = item.id;
-    slot = slot || -1;
+    slot = data.slot || -1;
     //如果是金币
     if (global.coinsMap[itemId]) {
+        let data = { player: player, count: global.coinsMap[itemId] * item.count };
+        global.postEvent(player, "onCoinsPickup", data);
         let coin = new global.PlayerCoin(player);
-        coin.add(global.coinsMap[itemId] * item.getCount());
+        coin.add(data.count);
         //TODO 音效不知道为什么没效果
         // player.level.playSound(player, player, player.getSoundSource(), "minecraft:entity.player.levelup", 1, 1);
         // player.level.runCommandSilent(`playsound minecraft:entity.player.levelup player ${player.getUsername().toString()}`);
@@ -51,7 +58,7 @@ global.playerGetItem = function (player, item, slot) {
     }
     //如果是遗物
     if (item.hasTag("relic")) {
-        global.playerAddRelic(player, itemId, item.getCount());
+        global.playerAddRelic(player, itemId, item.count);
         return true;
     }
     //如果是武器

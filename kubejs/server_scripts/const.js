@@ -6,3 +6,8 @@ const $RandomSource = Java.loadClass("net.minecraft.util.RandomSource");
 const $String = Java.loadClass("java.lang.String");
 
 global.isServerReady = true;
+
+for (const relicName in global.relicMap) {
+    let relic = global.relicMap[relicName];
+    if (!relic.item) relic.item = Item.of(relic.id);
+}

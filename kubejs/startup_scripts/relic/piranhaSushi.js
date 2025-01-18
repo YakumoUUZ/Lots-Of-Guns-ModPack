@@ -1,30 +1,36 @@
-function PiranhaSushi() {
+function PillagerFlag() {
     Relic.call(this, "piranha_sushi");
-    this.item = Item.of("golden_apple");
-    this.sushi = Item.of("apple");
+    this.sushi = "kubejs:piranha_sushi_healitem";
 }
 
-inherit(PiranhaSushi, Relic);
+inherit(PillagerFlag, Relic);
 
-PiranhaSushi.prototype.value = function (player) {
+PillagerFlag.prototype.value = function (player) {
     return this.lvl(player) * 0.3 + 0.2;
 };
 
-PiranhaSushi.prototype.onPlayerKillEntity = function (data) {
+PillagerFlag.prototype.onPlayerKillEntity = function (data) {
     /** @type {Internal.LivingEntityDeathEventJS} */
     let event = data.event;
     /** @type {Internal.Player} */
     let player = data.player;
-    let value = parseFloat(this.value(player.stringUuid).toFixed(1));
+    let value = parseFloat(this.value(player).toFixed(1));
     let number = Math.floor(value);
     number += Math.random() < value - number ? 1 : 0;
     if (number > 10) {
-        global.spawnItem(player.level, this.sushi.copyWithCount(number), event.entity.position(), true);
+        global.spawnItem(player.level, Item.of(this.sushi, number), event.entity.position(), true);
     } else {
         for (let i = 0; i < number; i++) {
-            global.spawnItem(player.level, this.sushi.copy(), event.entity.position(), true);
+            global.spawnItem(player.level, Item.of(this.sushi), event.entity.position(), true);
         }
     }
 };
 
-initRelic(PiranhaSushi);
+PillagerFlag.prototype.onItemPickupPre = function (data) {
+    if (data.item.id == this.sushi) {
+        data.player.heal(data.item.count);
+        data.item = null;
+    }
+};
+
+initRelic(PillagerFlag);

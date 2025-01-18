@@ -1,7 +1,7 @@
 PlayerEvents.loggedIn(event => initCoinIcon(event.player));
 
 function getCoin(player) {
-    return (player.persistentData.getInt("coin") || 0).toString();
+    return (player.persistentData.coin || 0).toFixed(2);
 }
 
 /**

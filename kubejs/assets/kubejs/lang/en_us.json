@@ -8,5 +8,8 @@
     "item.kubejs.relic_cola_mentos": "Cola Mentos",
     "item.kubejs.relic_vampire_fang": "Vampire Fang",
     "item.kubejs.relic_feeding_machine_servant": "Feeding Machine Servant",
-    "item.kubejs.relic_undead_totem_shard": "Undead Totem Shard"
+    "item.kubejs.relic_undead_totem_shard": "Undead Totem Shard",
+    "item.kubejs.relic_pillager_flag": "Pillager Flag",
+    "comment__": "-------------------------------------------ITEM-------------------------------------------",
+    "item.kubejs.piranha_sushi_healitem": "Piranha Sushi(Heal)"
 }

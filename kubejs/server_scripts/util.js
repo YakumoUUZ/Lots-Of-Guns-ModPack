@@ -12,7 +12,7 @@ global.PlayerCoin = function (player) {
 
 global.PlayerCoin.prototype = {
     get: function () {
-        return this.data.getInt("coin");
+        return this.data.coin;
     },
     add: function (count) {
         this.data.coin = this.data.coin + count;
@@ -129,7 +129,8 @@ ItemEvents.firstRightClicked("stick", event => {
     /** @type {Internal.ServerLevel} */
     const level = player.level;
     let pos = player.rayTrace(player.getEntityReach()).block?.pos;
-    // if (!pos) return;
+    if (!pos) return;
+    global.spawnPedestal(player.level, pos.above(), {type: "normal",item: global.getRandomRelic("common").item.copy()});
     // global.loadStructure(level, "kubejs:entrance", pos);
     // level.getBlock(pos).set("air");
     // global.playerRelicsMap[player.stringUuid] = {};
@@ -147,11 +148,11 @@ ItemEvents.firstRightClicked("stick", event => {
  */
 global.testFunc = function (player) {
     let itemStack = player.mainHandItem;
-    itemStack.nbt.remove("DummyAmmo")
+    // itemStack.nbt.remove("DummyAmmo")
     // itemStack.nbt.putInt("DummyAmmo", 9999)
-    console.log(player.mainHandItem.item.nameKey);
-    console.log(player.stringUuid instanceof $String);
-    console.log(global.getPlayerRelicMap(player));
+    console.log(global.getRandomRelic("common"))
+    // console.log(player.stringUuid instanceof $String);
+    // console.log(global.getPlayerRelicMap(player));
 };
 
 ServerEvents.commandRegistry(event => {

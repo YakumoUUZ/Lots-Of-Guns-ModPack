@@ -1,12 +1,15 @@
 //priority: 100
 global.relicPrefix = "kubejs:relic_";
 global.relicMap = {};
+global.relicRarityMap = {};
 
 global.playerRelicsMap = {};
 
+//#region Relic遗物基类
 /**
  *
  * @param {string} str
+ * @returns {string}
  */
 function toIdCase(str) {
     let newStr = [];
@@ -50,6 +53,18 @@ function object(o) {
 }
 
 /**
+ * 初始化遗物
+ * @param {*} relicClass
+ */
+function initRelic(relicClass) {
+    let relic = new relicClass();
+    global.relicMap[relic.name] = relic;
+    global.relicRarityMap[relic.rarity] = global.relicRarityMap[relic.rarity] || [];
+    global.relicRarityMap[relic.rarity].push(relic.name);
+}
+//#endregion
+
+/**
  * 根据名称获取遗物id
  * @param {string} relicName
  * @returns {string} id
@@ -66,6 +81,21 @@ global.getRelicId = function (relicName) {
 global.getRelicName = function (relicId) {
     if (relicId.startsWith(global.relicPrefix)) relicId = relicId.substring(global.relicPrefix.length());
     return relicId;
+};
+
+/**
+ * 根据稀有度获取随机遗物
+ * @param {string} rarity
+ * @returns {Relic}
+ */
+global.getRandomRelic = function (rarity) {
+    let relics = global.relicRarityMap[rarity];
+    if (!relics) {
+        console.error(`No relics found for rarity ${rarity}`);
+        return null;
+    }
+    let index = Math.floor(Math.random() * relics.length);
+    return global.relicMap[relics[index]];
 };
 
 /**
@@ -89,15 +119,6 @@ global.getPlayerRelic = function (player, relicName) {
     let playerRelics = global.getPlayerRelicMap(player);
     return playerRelics[relicName] || 0;
 };
-
-/**
- * 初始化遗物
- * @param {*} relicClass
- */
-function initRelic(relicClass) {
-    let relic = new relicClass();
-    global.relicMap[relic.name] = relic;
-}
 
 /**
  * 从nbt中读取玩家的遗物信息
