@@ -110,36 +110,38 @@ global.spawnItem = function (level, item, pos, random) {
 };
 
 /**
- * 
- * @param {*} player 
- * @param {*} sound 
- * @param {*} pos 
- * @param {*} volume 
- * @param {*} pitch 
+ *
+ * @param {Internal.Player} player
+ * @param {Internal.SoundEvent_} sound
+ * @param {Vec3d} pos
+ * @param {number} volume
+ * @param {number} pitch
  */
 global.playSound = function (player, sound, pos, volume, pitch) {
-    
-}
+    pos = pos || player.position();
+    volume = volume || 1;
+    pitch = pitch || 1;
+    player.level.playSound(null, pos.x(), pos.y(), pos.z(), sound, player.getSoundSource(), volume, pitch);
+};
 
 //测试用
 //#region test
 ItemEvents.firstRightClicked("stick", event => {
     if (event.hand != "MAIN_HAND") return;
     let player = event.player;
+    let item = player.mainHandItem;
     /** @type {Internal.ServerLevel} */
     const level = player.level;
     let pos = player.rayTrace(player.getEntityReach()).block?.pos;
     if (!pos) return;
-    global.spawnPedestal(player.level, pos.above(), {type: "normal",item: global.getRandomRelic("common").item.copy()});
+    // global.spawnPedestal(player.level, pos.above(), {type: "normal",item: global.getRandomRelic("common").item.copy()});
     // global.loadStructure(level, "kubejs:entrance", pos);
     // level.getBlock(pos).set("air");
     // global.playerRelicsMap[player.stringUuid] = {};
     // player.persistentData.remove("relic");
     // global.playerRemoveRelic(player, "piranha_sushi");
     // console.log(global.getPlayerRelicMap(player));
-    // console.log(level.playSound);
-    // level["playSound(net.minecraft.world.entity.player.Player,net.minecraft.core.BlockPos,net.minecraft.sounds.SoundEvent,net.minecraft.sounds.SoundSource,float,float)"](null, player.blockPosition(), "minecraft:entity.player.levelup",  player.getSoundSource(), 1, 1)
-    // player.level.playSound(player, player.blockPosition(), "minecraft:entity.player.levelup",  player.getSoundSource(), 1, 1)
+    // global.playSound(player, "entity.player.levelup")
     player.swing();
 });
 
@@ -150,7 +152,7 @@ global.testFunc = function (player) {
     let itemStack = player.mainHandItem;
     // itemStack.nbt.remove("DummyAmmo")
     // itemStack.nbt.putInt("DummyAmmo", 9999)
-    console.log(global.getRandomRelic("common"))
+    console.log(global.getRandomRelic("common"));
     // console.log(player.stringUuid instanceof $String);
     // console.log(global.getPlayerRelicMap(player));
 };

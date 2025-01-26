@@ -111,7 +111,7 @@ function pedestalInteract(player, block) {
         case global.pedestalsTypeList[0]: {
             let itemEntity = global.playerGetItem(player, pedestalItem);
             if (itemEntity) {
-                inventory.setStackInSlot(0, itemEntity.item || Item.empty);
+                inventory.setStackInSlot(0, itemEntity?.item || Item.empty);
                 if (itemEntity.discard) itemEntity.discard();
             }
             break;

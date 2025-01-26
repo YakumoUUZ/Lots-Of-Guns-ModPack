@@ -30,7 +30,7 @@ ItemEvents.firstRightClicked(event => {
  * 玩家获得物品
  * @param {Internal.ServerPlayer} player
  * @param {Internal.ItemStack} item
- * @returns {boolean} success
+ * @returns {boolean | Internal.ItemEntity} success
  */
 global.playerGetItem = function (player, item, slot) {
     if (!item) {
@@ -50,10 +50,7 @@ global.playerGetItem = function (player, item, slot) {
         global.postEvent(player, "onCoinsPickup", data);
         let coin = new global.PlayerCoin(player);
         coin.add(data.count);
-        //TODO 音效不知道为什么没效果
-        // player.level.playSound(player, player, player.getSoundSource(), "minecraft:entity.player.levelup", 1, 1);
-        // player.level.runCommandSilent(`playsound minecraft:entity.player.levelup player ${player.getUsername().toString()}`);
-        // console.log("Coins: " + coin.get());
+        global.playSound(player, "entity.experience_orb.pickup")
         return true;
     }
     //如果是遗物

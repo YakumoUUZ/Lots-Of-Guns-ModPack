@@ -40,7 +40,7 @@ global.playerEventsMap = {};
  */
 global.postEvent = function (player, eventName, data) {
     if (!(player instanceof $String)) player = player.stringUuid;
-    console.log(`postEvent: ${eventName} to ${player} with data ${data}`);
+    // console.log(`postEvent: ${eventName} to ${player} with data ${data}`);
     //全局事件
     if (global.commonEventsMap[eventName] && Object.keys(global.commonEventsMap[eventName]).length > 0) {
         for (const handlerId in global.commonEventsMap[eventName]) {

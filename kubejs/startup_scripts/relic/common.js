@@ -1,5 +1,5 @@
 //priority: 100
-global.relicPrefix = "kubejs:relic_";
+const relicPrefix = "kubejs:relic_";
 global.relicMap = {};
 global.relicRarityMap = {};
 
@@ -27,7 +27,7 @@ function toIdCase(str) {
 //遗物基类
 function Relic(name) {
     this.name = toIdCase(name);
-    this.id = global.relicPrefix + this.name;
+    this.id = relicPrefix + this.name;
     this.rarity = "common";
 }
 
@@ -79,7 +79,7 @@ global.getRelicId = function (relicName) {
  * @returns {string} name
  */
 global.getRelicName = function (relicId) {
-    if (relicId.startsWith(global.relicPrefix)) relicId = relicId.substring(global.relicPrefix.length());
+    if (relicId.startsWith(relicPrefix)) relicId = relicId.substring(relicPrefix.length());
     return relicId;
 };
 
@@ -95,7 +95,7 @@ global.getRandomRelic = function (rarity) {
         return null;
     }
     let index = Math.floor(Math.random() * relics.length);
-    return global.relicMap[relics[index]];
+    return global.relicMap[relics[index]].copy();
 };
 
 /**

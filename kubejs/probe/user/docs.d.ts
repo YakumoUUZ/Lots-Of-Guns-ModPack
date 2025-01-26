@@ -7,7 +7,20 @@ class PlayerCoin {
 
 declare const global: {
     PlayerCoin: typeof PlayerCoin;
-    eventList: ["onPlayerGetRelic", "onPlayerLoseRelic", "onPlayerAddRelic", "onPlayerRemoveRelic", "onPlayerKillEntity"];
+    eventList: [
+        "onPlayerGetRelic",
+        "onPlayerLoseRelic",
+        "onPlayerAddRelic",
+        "onPlayerRemoveRelic",
+        "onPlayerHurtEntity",
+        "onEntityHurtPlayer",
+        "onPlayerKillEntity",
+        "onEntityHurtByGun",
+        "onPlayerAmmoHitEntity",
+        "onPlayerAmmoHitBlock",
+        "onItemPickupPre",
+        "onCoinsPickup"
+    ];
     playerGetItem(player: Internal.Player, item: Internal.ItemStack, [slot]: number): boolean | Internal.ItemEntity;
     spawnItem(level: Internal.ServerLevel, item: Internal.ItemStack, pos: Vec3d, [random]: any): Internal.ItemEntity;
     readRelicsFromNbt(player: Internal.Player): void;
@@ -22,27 +35,66 @@ declare const global: {
     postEvent(player: Internal.Player, eventName: string, data: any): void;
     getPlayerRelicMap(player: Internal.Player): { [relicName: string]: number };
     loadStructure(level: Internal.ServerLevel, name: string, pos: BlockPos, [settings]: any): void;
-    spawnPedestal(level: Internal.ServerLevel, pos: BlockPos, data:{type:string, item:Internal.ItemStack, price?:number, id?:string}): Internal.BlockContainerJS;
+    playSound(player: Internal.Player, sound: Internal.SoundEvent_, [pos]: Vec3d, [volume]: number, [pitch]: number): void;
+    spawnPedestal(
+        level: Internal.ServerLevel,
+        pos: BlockPos,
+        data: { type: string; item: Internal.ItemStack; price?: number; id?: string }
+    ): Internal.BlockContainerJS;
     testFunc(player: Internal.Player): void;
-    spawn_wave: {};
-    door_action: {};
     playerEventsMap: { [uuid: string]: { [eventName: string]: { [relicName: string]: number } } };
-    pedestalsTypeIconMap: { normal: Internal.ItemStack; firstWeapon: Internal.ItemStack; shop: Internal.ItemStack; readonly: Internal.ItemStack };
-    pedestalsTypeList: ["normal", "firstWeapon", "shop", "readonly"];
+    pedestalsTypeList: ["normal", "giver", "firstWeapon", "shop", "readonly"];
+    pedestalsTypeIconMap: {
+        normal: Internal.ItemStack;
+        giver: Internal.ItemStack;
+        firstWeapon: Internal.ItemStack;
+        shop: Internal.ItemStack;
+        readonly: Internal.ItemStack;
+    };
+    pedestalsTagItemMap: {
+        weapon: "pedestals:bamboo_planks_pedestal";
+        relic: "pedestals:birch_planks_pedestal";
+        consumables: "pedestals:jungle_planks_pedestal";
+    };
     coinsMap: { "minecraft:emerald": 1.0; "minecraft:diamond": 5.0 };
-    relicPrefix: "kubejs:relic_";
     playerRelicsMap: { [uuid: string]: { [relicName: string]: number } };
     relicMap: {
-        piranha_sushi: {
-            name: "piranha_sushi";
-            id: Internal.ConsString;
-            rarity: "common";
-            texture: "minecraft:item/diamond";
-            item: Internal.ItemStack;
-            sushi: Internal.ItemStack;
-        };
+        carrot_spice_of_life: { name: "carrot_spice_of_life"; id: Internal.ConsString; rarity: "common"; item: Internal.ItemStack };
+        cola_mentos: { name: "cola_mentos"; id: Internal.ConsString; rarity: "common"; item: Internal.ItemStack };
+        feeding_machine_servant: { name: "feeding_machine_servant"; id: Internal.ConsString; rarity: "common"; item: Internal.ItemStack };
+        pillager_flag: { name: "pillager_flag"; id: Internal.ConsString; rarity: "common"; item: Internal.ItemStack };
+        piranha_sushi: { name: "piranha_sushi"; id: Internal.ConsString; rarity: "common"; sushi: "kubejs:piranha_sushi_healitem"; item: Internal.ItemStack };
+        undead_totem_shard: { name: "undead_totem_shard"; id: Internal.ConsString; rarity: "common"; item: Internal.ItemStack };
+        vampire_fang: { name: "vampire_fang"; id: Internal.ConsString; rarity: "common"; item: Internal.ItemStack };
     };
-    onItemPickUpEvent: {};
+    
+    spawn_wave: {};
+    door_action: {};
     build_room: {};
     room_function: {};
+
+    pedestalsTypeItemMap: {
+        normal: "pedestals:pedestal";
+        giver: "pedestals:smooth_stone_pedestal";
+        firstWeapon: "pedestals:polished_diorite_pedestal";
+        shop: "pedestals:cherry_planks_pedestal";
+        readonly: "pedestals:quartz_pedestal";
+    };
+
+    setField: {};
+    toRawClass: {};
+    loadRawClass: {};
+    getDeclaredField: {};
+    getField: {};
+
+    commonEventsMap: {};
+    addCommonEventHandler: {};
+    relicRarityMap: { common: { 1: null; 2: null; 3: null; 4: null; 5: null; 6: null; 0: null } };
+    getRandomRelic(rarity: string): Internal.ItemStack;
+    isServerReady: true;
+    onGunReloadEvent({}): void;
+    onItemPickUpEvent({}): void;
+    onItemTooltipEvent({}): void;
+    onEntityHurtByGunEvent({}): void;
+    onAmmoHitBlockEvent({}): void;
 };
