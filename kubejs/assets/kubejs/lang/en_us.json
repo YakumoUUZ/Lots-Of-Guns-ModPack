@@ -10,7 +10,13 @@
 	"item.kubejs.relic_feeding_machine_servant": "Feeding Machine Servant",
 	"item.kubejs.relic_undead_totem_shard": "Undead Totem Shard",
 	"item.kubejs.relic_pillager_flag": "Pillager Flag",
+	"item.kubejs.relic_corrupted_spider_eye": "CorruptedSpiderEye",
+	"item.kubejs.relic_obsidian_shard": "ObsidianShard",
+	"item.kubejs.relic_mace": "Mace",
+	"item.kubejs.relic_tick_reducer": "Tick Reducer",
 	"comment__": "-------------------------------------------ITEM-------------------------------------------",
 	"item.kubejs.piranha_sushi_healitem": "Piranha Sushi(Heal)",
-	"item.kubejs.baka_glasses": "Genius Glasses"
+	"item.kubejs.baka_glasses": "Genius Glasses",
+	"comment___": "----------------------------------------potion-------------------------------------------",
+	"effect.kubejs.stun": "stun"
 }

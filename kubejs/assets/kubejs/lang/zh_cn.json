@@ -10,7 +10,13 @@
 	"item.kubejs.relic_feeding_machine_servant": "供弹机仆",
 	"item.kubejs.relic_undead_totem_shard": "不死图腾碎片",
 	"item.kubejs.relic_pillager_flag": "掠夺者旗帜",
-	"comment__": "-------------------------------------------ITEM-------------------------------------------",
+	"item.kubejs.relic_corrupted_spider_eye": "腐化蛛眼",
+	"item.kubejs.relic_obsidian_shard": "黑曜石碎片",
+	"item.kubejs.relic_mace": "重锤",
+	"item.kubejs.relic_tick_reducer": "Tick减速器",
+	"comment__": "-------------------------------------------物品-------------------------------------------",
 	"item.kubejs.piranha_sushi_healitem": "食人鱼寿司(治疗)",
-	"item.kubejs.baka_glasses": "天才眼镜"
+	"item.kubejs.baka_glasses": "天才眼镜",
+	"comment___": "------------------------------------------药水-------------------------------------------",
+	"effect.kubejs.stun": "眩晕"
 }
