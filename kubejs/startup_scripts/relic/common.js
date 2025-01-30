@@ -29,6 +29,7 @@ function Relic(name) {
     this.name = toIdCase(name);
     this.id = relicPrefix + this.name;
     this.rarity = "common";
+    this.priority = 0;
 }
 
 //获取遗物等级
@@ -95,7 +96,7 @@ global.getRandomRelic = function (rarity) {
         return null;
     }
     let index = Math.floor(Math.random() * relics.length);
-    return global.relicMap[relics[index]].copy();
+    return global.relicMap[relics[index]].item.copy();
 };
 
 /**
@@ -207,8 +208,9 @@ global.playerGetRelic = function (player, relicName) {
     let eventMap = global.playerEventsMap[uuid];
     for (const eventName of global.eventList) {
         if (relic[eventName]) {
-            if (!eventMap[eventName]) eventMap[eventName] = {};
-            eventMap[eventName][relicName] = true;
+            if (!eventMap[eventName]) eventMap[eventName] = [];
+            eventMap[eventName].push(relicName);
+            eventMap[eventName].sort((a, b) => global.relicMap[b].priority - global.relicMap[a].priority);
         }
     }
     global.postEvent(player, "onPlayerGetRelic", { player: player, relicName: relicName });
@@ -231,7 +233,8 @@ global.playerLoseRelic = function (player, relicName) {
     for (const eventName of global.eventList) {
         if (relic[eventName]) {
             if (!eventMap[eventName]) continue;
-            delete eventMap[eventName][relicName];
+            let index = eventMap[eventName].indexOf(relicName);
+            if (index >= 0) eventMap[eventName].splice(index, 1);
         }
     }
     global.postEvent(player, "onPlayerLoseRelic", { player: player, relicName: relicName });

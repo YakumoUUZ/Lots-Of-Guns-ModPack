@@ -5,7 +5,8 @@ function ObsidianShard() {
 
 inherit(ObsidianShard, Relic);
 
-ObsidianShard.prototype.onPlayerAmmoHitEntity = function (data) {
+ObsidianShard.prototype.onPlayerHurtEntity = function (data) {
+	if (poisonDamages[data.damageType]) return;
 	let config = {
 		time: 5, // 单位是秒
 		amp: 0, // 等级

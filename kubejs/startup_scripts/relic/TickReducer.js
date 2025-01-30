@@ -4,7 +4,8 @@ function TickReducer() {
 
 inherit(TickReducer, Relic);
 
-TickReducer.prototype.onPlayerAmmoHitEntity = function (data) {
+TickReducer.prototype.onPlayerHurtEntity = function (data) {
+	if (poisonDamages[data.damageType]) return;
 	let config = {
 		time: 5, // 单位是秒
 		amp: 0, // 等级

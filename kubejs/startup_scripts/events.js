@@ -16,18 +16,18 @@ ForgeEvents.onEvent("com.tacz.guns.api.event.server.AmmoHitBlockEvent", e => try
 //#endregion
 
 global.eventList = [
+    "onEntityHurtByGun",
+    "onPlayerAmmoHitEntity",
+    "onPlayerAmmoHitBlock",
+    "onPlayerHurtEntity",
+    "onEntityHurtPlayer",
+    "onPlayerKillEntity",
+    "onItemPickupPre",
+    "onCoinsPickup",
     "onPlayerGetRelic",
     "onPlayerLoseRelic",
     "onPlayerAddRelic",
     "onPlayerRemoveRelic",
-    "onPlayerHurtEntity",
-    "onEntityHurtPlayer",
-    "onPlayerKillEntity",
-    "onEntityHurtByGun",
-    "onPlayerAmmoHitEntity",
-    "onPlayerAmmoHitBlock",
-    "onItemPickupPre",
-    "onCoinsPickup",
 ];
 
 global.commonEventsMap = {};
@@ -51,8 +51,8 @@ global.postEvent = function (player, eventName, data) {
     //玩家事件
     let playerEvents = global.playerEventsMap[player];
     if (!(playerEvents && playerEvents[eventName])) return;
-    if (playerEvents[eventName] && Object.keys(playerEvents[eventName]).length > 0) {
-        for (const relicName in playerEvents[eventName]) {
+    if (playerEvents[eventName] && playerEvents[eventName].length > 0) {
+        for (const relicName of playerEvents[eventName]) {
             global.relicMap[relicName][eventName](data);
         }
     }

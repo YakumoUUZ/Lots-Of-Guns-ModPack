@@ -30,6 +30,10 @@ global.pedestalsTagItemMap = {
 
 global.pedestalsTypeList = {};
 
+const poisonDamages = {
+	"attributeslib:bleeding": true,
+}
+
 /**
  *
  * @param {Internal.StartupEventJS} event

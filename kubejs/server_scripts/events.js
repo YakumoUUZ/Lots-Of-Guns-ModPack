@@ -30,17 +30,26 @@ global.onAmmoHitBlockEvent = function (event) {
 /**
  * @param {Internal.LivingHurtEvent} event
  */
-global.onLivingHurtEvent = function(event) {
+global.onLivingHurtEvent = function (event) {
     let {
         entity,
-        amount,
         source: { actual: attacker },
     } = event;
-    if (attacker.isPlayer()) {
-        global.postEvent(attacker, "onPlayerHurtEntity", { player: attacker, entity: entity, amount: amount, event: event });
+    let data = {
+        event: event,
+        source: event.source,
+        amount: event.amount,
+        damageType: event.source.type().msgId(),
+    };
+    if (attacker && attacker.isPlayer()) {
+        data.player = attacker;
+        data.entity = entity;
+        global.postEvent(attacker, "onPlayerHurtEntity", data);
     }
     if (entity.isPlayer()) {
-        global.postEvent(entity, "onEntityHurtPlayer", { player: entity, entity: attacker, amount: amount, event: event });
+        data.player = entity;
+        data.entity = attacker;
+        global.postEvent(entity, "onEntityHurtPlayer", data);
     }
 };
 

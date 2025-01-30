@@ -1,15 +1,19 @@
 function FuriousCocktail() {
     Relic.call(this, "FuriousCocktail");
+    this.priority = 1;
 }
 
 inherit(FuriousCocktail, Relic);
 
 FuriousCocktail.prototype.value = function (player) {
-    return this.lvl(player) * 0.1 + 1; // !!我懒了的数值策划部分 加伤倍数 -- 设置部分，我懒得写算法了，下面也随手写了个乘法
+    return this.lvl(player) * 0.3 + 1.7;
 };
 
 FuriousCocktail.prototype.onPlayerHurtEntity = function (data) {
-    /** @type {{player:Internal.Player, entity:Internal.LivingEntity}} */
+    // console.log(data.damageType, data.event.amount)
+    if (poisonDamages[data.damageType]) return;
+
+    /** @type {{player:Internal.Player, entity:Internal.LivingEntity, source:Internal.LivingHurtEvent.source}} */
     let { entity, player, event } = data;
 
     let i = 0; // 声明一个变量用来算有多少记录好的效果在实体上
@@ -22,6 +26,7 @@ FuriousCocktail.prototype.onPlayerHurtEntity = function (data) {
     });
     if (i >= 4) {
         event.amount *= this.value(player);
+        // console.log("Furious Cocktail applied effect to " + event.amount);
     }
 };
 
