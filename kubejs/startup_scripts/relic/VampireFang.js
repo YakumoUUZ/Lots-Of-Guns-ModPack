@@ -5,7 +5,7 @@ function VampireFang() {
 inherit(VampireFang, Relic);
 
 VampireFang.prototype.value = function (player) {
-    return this.lvl(player) * 0.01;
+    return this.lvl(player) * 0.1;
 };
 
 VampireFang.prototype.onPlayerHurtEntity = function (data) {

@@ -1,15 +1,12 @@
 function UndeadTotemShard() {
     Relic.call(this, "UndeadTotemShard");
+    this.chanceFactor = 1.0625;
 }
 
 inherit(UndeadTotemShard, Relic);
 
-UndeadTotemShard.prototype.value = function (player) {
-    return 1 - Math.pow(1.0625, -this.lvl(player));
-};
-
 UndeadTotemShard.prototype.onEntityHurtPlayer = function (data) {
-    if (Math.random() < this.value(data.player)) {
+    if (this.chanceFired(data.player)) {
         data.event.cancel();
     }
 };

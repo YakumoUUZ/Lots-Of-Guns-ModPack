@@ -1,11 +1,13 @@
 function TickReducer() {
 	Relic.call(this, "TickReducer");
+	this.chanceFactor = 1.125;
 }
 
 inherit(TickReducer, Relic);
 
 TickReducer.prototype.onPlayerHurtEntity = function (data) {
 	if (poisonDamages[data.damageType]) return;
+	if (!this.chanceFired(data.player)) return;
 	let config = {
 		time: 5, // 单位是秒
 		amp: 0, // 等级

@@ -1,12 +1,14 @@
 //requires: attributeslib
 function ObsidianShard() {
 	Relic.call(this, "ObsidianShard");
+	this.chanceFactor = 1.125;
 }
 
 inherit(ObsidianShard, Relic);
 
 ObsidianShard.prototype.onPlayerHurtEntity = function (data) {
 	if (poisonDamages[data.damageType]) return;
+	if (!this.chanceFired(data.player)) return;
 	let config = {
 		time: 5, // 单位是秒
 		amp: 0, // 等级

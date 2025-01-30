@@ -30,12 +30,21 @@ function Relic(name) {
     this.id = relicPrefix + this.name;
     this.rarity = "common";
     this.priority = 0;
+    this.chanceFactor = 1.25;
 }
 
 //获取遗物等级
 Relic.prototype.lvl = function (player) {
     return global.getPlayerRelic(player, this.name) || 0;
 };
+
+Relic.prototype.chance = function (player) {
+    return 1 - Math.pow(this.chanceFactor, -this.lvl(player));
+};
+
+Relic.prototype.chanceFired = function (player) {
+    return Math.random() < this.chance(player);
+}
 
 //继承
 function inherit(child, parent) {

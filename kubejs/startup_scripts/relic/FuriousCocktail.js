@@ -1,6 +1,6 @@
 function FuriousCocktail() {
     Relic.call(this, "FuriousCocktail");
-    this.priority = 1;
+    this.priority = -1;
 }
 
 inherit(FuriousCocktail, Relic);
