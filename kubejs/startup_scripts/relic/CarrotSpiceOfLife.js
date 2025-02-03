@@ -1,5 +1,5 @@
 function CarrotSpiceOfLife() {
-    Relic.call(this, "carrot_spice_of_life");
+    Relic.call(this, "CarrotSpiceOfLife");
 }
 
 inherit(CarrotSpiceOfLife, Relic);

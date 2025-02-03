@@ -71,6 +71,7 @@ function initRelic(relicClass) {
     global.relicMap[relic.name] = relic;
     global.relicRarityMap[relic.rarity] = global.relicRarityMap[relic.rarity] || [];
     global.relicRarityMap[relic.rarity].push(relic.name);
+    if (relic.init) relic.init()
 }
 //#endregion
 
@@ -89,7 +90,7 @@ global.getRelicId = function (relicName) {
  * @returns {string} name
  */
 global.getRelicName = function (relicId) {
-    if (relicId.startsWith(relicPrefix)) relicId = relicId.substring(relicPrefix.length());
+    if (relicId.startsWith(relicPrefix)) relicId = relicId.substring(relicPrefix.length);
     return relicId;
 };
 
