@@ -1,0 +1,46 @@
+{
+	"roomtype": "enemy",
+	"chunk_size": {
+		"x": 1,
+		"z": 1
+	},
+
+	"block_shift": {
+		"x": 0,
+		"z": 0
+	},
+
+	"detect_range": {
+		"from": [1, 1, 1],
+		"to": [14, 20, 14]
+	},
+
+	"door_data": [],
+	"waves": 2,
+	"wave_data": [
+		[
+			{
+				"pos": [5, 2, 11],
+				"type": "minecraft:zombie"
+			},
+			{
+				"pos": [12, 2, 12],
+				"type": "minecraft:zombie"
+			}
+		],
+		[
+			{
+				"pos": [5, 2, 4],
+				"type": "minecraft:skeleton"
+			},
+			{
+				"pos": [11, 2, 4],
+				"type": "minecraft:skeleton"
+			},
+			{
+				"pos": [7, 2, 7],
+				"type": "minecraft:skeleton"
+			}
+		]
+	]
+}

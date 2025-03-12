@@ -1,0 +1,21 @@
+{
+	"roomtype": "enemy",
+	"chunk_size": {
+		"x": 3,
+		"z": 2
+	},
+
+	"block_shift": {
+		"x": -32,
+		"z": 0
+	},
+
+	"detect_range": {
+		"from": [1, 1, 1],
+		"to": [46, 20, 30]
+	},
+
+	"door_data": [],
+	"waves": 0,
+	"wave_data": []
+}

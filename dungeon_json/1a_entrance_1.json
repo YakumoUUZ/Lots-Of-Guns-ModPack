@@ -1,0 +1,53 @@
+{
+	"roomtype": "entrance",
+	"chunk_size": {
+		"x": 1,
+		"z": 1
+	},
+
+	"block_shift": {
+		"x": 0,
+		"z": 16
+	},
+
+	"detect_range": {
+		"from": [1, 1, 1],
+		"to": [14, 10, 14]
+	},
+
+	"door_data": [],
+
+	"theme_data": {
+		"enemy_rooms": [
+			{
+				"id": "1a_enemy_2",
+				"weight": 1
+			},
+			{
+				"id": "1a_enemy_3",
+				"weight": 2
+			},
+			{
+				"id": "1a_enemy_4",
+				"weight": 4
+			},
+			{
+				"id": "1a_enemy_5",
+				"weight": 4
+			},
+			{
+				"id": "1a_enemy_6",
+				"weight": 4
+			},
+			{
+				"id": "1a_enemy_7",
+				"weight": 4
+			},
+			{
+				"id": "1a_enemy_8",
+				"weight": 4
+			}
+		],
+		"end_room": "1a_end_1"
+	}
+}
