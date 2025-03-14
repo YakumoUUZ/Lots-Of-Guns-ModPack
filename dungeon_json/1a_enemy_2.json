@@ -15,7 +15,35 @@
 		"to": [46, 20, 30]
 	},
 
-	"door_data": [],
-	"waves": 0,
-	"wave_data": []
+	"door_data": [
+		{
+			"pos": [41, 1, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 2
+		},
+		{
+			"pos": [40, 0, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 4
+		},
+		{
+			"pos": [39, 1, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 4
+		},
+		{
+			"pos": [38, 2, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 2
+		}
+	],
+	"waves": 1,
+	"wave_data": [
+		[
+			{
+				"pos": [39, 3, 1],
+				"type": "minecraft:zombie"
+			}
+		]
+	]
 }

@@ -12,10 +12,31 @@
 
 	"detect_range": {
 		"from": [1, 1, 1],
-		"to": [14, 20, 14]
+		"to": [14, 15, 14]
 	},
 
-	"door_data": [],
+	"door_data": [
+		{
+			"pos": [6, 1, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 2
+		},
+		{
+			"pos": [7, 0, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 4
+		},
+		{
+			"pos": [8, 0, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 4
+		},
+		{
+			"pos": [9, 2, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 1
+		}
+	],
 	"waves": 2,
 	"wave_data": [
 		[
