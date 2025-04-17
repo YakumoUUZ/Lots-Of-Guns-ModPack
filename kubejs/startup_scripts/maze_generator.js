@@ -120,7 +120,7 @@ global.build_room = function (level, name, entity) {
     powerblock.set("minecraft:redstone_block");
     strblock.set("minecraft:air");
     powerblock.set("minecraft:air"); */
-	global.loadStructure(level, `kubejs:${name}`, target_pos.offset(0, 1, 0));
+	global.loadStructure(level, `kubejs:${name}`, target_pos.offset(0, roomdata.block_shift.y + 1, 0)); // 这样偏移我觉得应该不会撞上建筑罢
 	let new_core = level.getBlock(target_pos);
 	new_core.set("minecraft:air");
 	new_core.set("kubejs:room_core");
@@ -186,7 +186,18 @@ global.door_action = function (level, entity, isopen) {
 	// console.log(doordata);
 	for (const door of doordata) {
 		let targetpos = pos.offset(door.pos[0], door.pos[1] + 1, door.pos[2]);
-		level.spawnParticles("minecraft:campfire_signal_smoke", false, targetpos.x + 0.5, targetpos.y + door.height / 2, targetpos.z + 0.5, 0.5, door.height / 2, 0.5, 4 * door.height, 0.01);
+		level.spawnParticles(
+			"minecraft:campfire_signal_smoke",
+			false,
+			targetpos.x + 0.5,
+			targetpos.y + door.height / 2,
+			targetpos.z + 0.5,
+			0.5,
+			door.height / 2,
+			0.5,
+			4 * door.height,
+			0.01
+		);
 		for (let j = 0; j < door.height; j++) {
 			targetpos = targetpos.above();
 			let targetblock = level.getBlock(targetpos);

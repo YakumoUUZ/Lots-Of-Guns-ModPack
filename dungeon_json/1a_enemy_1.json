@@ -7,7 +7,7 @@
 
 	"block_shift": {
 		"x": 0,
-		"y": 0,
+		"y": -6,
 		"z": 0
 	},
 
@@ -18,14 +18,14 @@
 
 	"door_data": [
 		{
-			"pos": [6, 2, 0],
-			"block": "cataclysm:dungeon_block",
-			"height": 1
-		},
-		{
-			"pos": [7, 1, 0],
+			"pos": [6, 0, 0],
 			"block": "cataclysm:dungeon_block",
 			"height": 3
+		},
+		{
+			"pos": [7, 0, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 4
 		},
 		{
 			"pos": [8, 0, 0],
@@ -38,26 +38,24 @@
 			"height": 3
 		}
 	],
-	"waves": 2,
+	"waves": 1,
 	"wave_data": [
 		[
 			{
-				"pos": [3, 2, 11],
+				"pos": [3, 2, 14],
 				"type": "minecraft:zombie"
 			},
 			{
-				"pos": [12, 2, 11],
+				"pos": [12, 3, 14],
 				"type": "minecraft:zombie"
-			}
-		],
-		[
-			{
-				"pos": [2, 2, 6],
-				"type": "minecraft:skeleton"
 			},
 			{
-				"pos": [12, 2, 4],
-				"type": "minecraft:skeleton"
+				"pos": [12, 5, 10],
+				"type": "minecraft:zombie"
+			},
+			{
+				"pos": [2, 6, 8],
+				"type": "minecraft:zombie"
 			}
 		]
 	]
