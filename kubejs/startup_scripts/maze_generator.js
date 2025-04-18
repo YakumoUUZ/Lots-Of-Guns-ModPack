@@ -38,12 +38,16 @@ global.room_function = function (entity) {
     let data = entity.persistentData;
     let level = entity.getLevel();
 
+    let mazeList = ["1a_entrance_1"];
+    let mazeRandom = Math.floor(Math.random() * mazeList.length);
+    let mazeSelected = mazeList[mazeRandom];
+
     if (data.getInt("disabled") == 1 || level.getDimension() != "dimdungeons:dungeon_dimension") return;
 
     let stage = data.getInt("stage");
     //初始房间核心(无数据), 生成入口房间
     if (stage == 0) {
-        global.build_room(level, "example_entrance_1", entity);
+        global.build_room(level, mazeSelected, entity);
         return;
     }
     let type = data.getString("roomtype");
@@ -116,7 +120,7 @@ global.build_room = function (level, name, entity) {
     powerblock.set("minecraft:redstone_block");
     strblock.set("minecraft:air");
     powerblock.set("minecraft:air"); */
-    global.loadStructure(level, `kubejs:${name}`, target_pos.offset(0, 1, 0));
+    global.loadStructure(level, `kubejs:${name}`, target_pos.offset(0, roomdata.block_shift.y + 1, 0)); // 这样偏移我觉得应该不会撞上建筑罢
     let new_core = level.getBlock(target_pos);
     new_core.set("minecraft:air");
     new_core.set("kubejs:room_core");
