@@ -10,9 +10,12 @@ kubejs/README.txt
 !manifest.json
 !modlist.html
 
-!config/dimdungeons-common-r190.toml
 !dungeon_json/**
+!config/dimdungeons-common-r190.toml
 !config/skyblockbuilder/templates/spawn.nbt
 !config/skyblockbuilder/templates.json5
 !config/defaultworldtype/client-config.toml
 !config/tacz-common.toml
+!config/apotheosis/apotheosis.cfg
+
+!defaultconfigs/**
