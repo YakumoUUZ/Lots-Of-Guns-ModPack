@@ -1,0 +1,62 @@
+{
+	"roomtype": "enemy",
+	"chunk_size": {
+		"x": 3,
+		"z": 3
+	},
+
+	"block_shift": {
+		"x": -16,
+		"y": 0,
+		"z": 0
+	},
+
+	"detect_range": {
+		"from": [0, 0, 0],
+		"to": [47, 20, 47]
+	},
+
+	"door_data": [
+		{
+			"pos": [22, 0, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 4
+		},
+		{
+			"pos": [24, 0, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 5
+		},
+		{
+			"pos": [23, 0, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 5
+		},
+		{
+			"pos": [25, 0, 0],
+			"block": "cataclysm:dungeon_block",
+			"height": 4
+		}
+	],
+	"waves": 1,
+	"wave_data": [
+		[
+			{
+				"pos": [40, 4, 20],
+				"type": "minecraft:zombie"
+			},
+			{
+				"pos": [30, 4, 20],
+				"type": "minecraft:zombie"
+			},
+			{
+				"pos": [40, 4, 20],
+				"type": "minecraft:zombie"
+			},
+			{
+				"pos": [36, 4, 20],
+				"type": "minecraft:zombie"
+			}
+		]
+	]
+}
