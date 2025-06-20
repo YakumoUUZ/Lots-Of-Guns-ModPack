@@ -1,4 +1,4 @@
-let relicCards = [];
+/* let relicCards = [];
 for (let relicName in global.relicMap) {
     let cardId = RandomCardRewards.rl(relicName);
     let card = new RCRCard(cardId, `item.kubejs.relic_${relicName}`, "descriptionKey", RandomCardRewards.rl("empty"), CardContent["item(java.lang.String)"](global.relicMap[relicName].id));
@@ -20,3 +20,4 @@ randomcardrewards.cardInvokePre(e => {
         e.setCanceled(true);
     }
 })
+ */

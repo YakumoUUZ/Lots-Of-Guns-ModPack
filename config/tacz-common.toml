@@ -10,6 +10,9 @@
 	CreativePlayerConsumeAmmo = true
 	#Auto reload all the guns in player inventory, useful for pvp servers
 	AutoReloadWhenRespawn = false
+	#The silencer default fire sound range (block)
+	#Range: > 0
+	DefaultGunSilenceSoundDistance = 16
 
 [ammo]
 	#Warning: Ammo with explosive properties can break blocks
